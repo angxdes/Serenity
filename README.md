@@ -5,7 +5,7 @@
 - [Descripción del Proyecto](#descripción-del-proyecto)
 - [Características Principales](#características-principales)
 - [Instalación](#instalación)
-
+- [Contribución](#contribución)
 
 ## Descripción del Proyecto
 
@@ -57,6 +57,29 @@ o
 `python manage.py runserver`
 
 </br>
+
+## Contribución
+
+<p>¡Gracias por tu interés en contribuir a este proyecto! A continuación, se presentan algunas pautas para ayudarte a empezar:</p>
+
+<ul>
+  <li>Si encuentras un error o tienes una idea para una mejora, por favor, abre un issue en el repositorio. Asegúrate de proporcionar detalles claros y concisos sobre el problema o la sugerencia.</li>
+  <li>Si deseas trabajar en una tarea existente, comenta en el issue correspondiente para informar a los demás de tu intención y evitar duplicados de esfuerzo.</li>
+  <li>Si deseas contribuir con código, sigue estos pasos:
+    <ol>
+      <li>Haz un fork de este repositorio y clónalo en tu máquina local.</li>
+      <li>Crea una nueva rama para tu contribución: <code>git checkout -b mi-contribucion</code>.</li>
+      <li>Realiza tus cambios y asegúrate de que el código sigue las convenciones de estilo existentes.</li>
+      <li>Realiza commits descriptivos y claros.</li>
+      <li>Envía un pull request a la rama <code>main</code> de este repositorio, describiendo los cambios realizados y cualquier información relevante.</li>
+    </ol>
+  </li>
+  <li>Se valoran y aprecian todas las contribuciones, ya sea en forma de código, documentación, corrección de errores, pruebas, sugerencias o comentarios.</li>
+</ul>
+
+<p>Agradecemos mucho todas las contribuciones, grandes o pequeñas. Juntos podemos hacer crecer este proyecto y mejorar su funcionalidad para beneficiar a la comunidad.</p>
+
+
 
 <p align="center">
 <em>¡Disfruta del proyecto!</em>
