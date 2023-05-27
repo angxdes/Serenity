@@ -32,6 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
+    'api_reader_pdf.apps.Api_reader_pdfConfig',
     'chatbot.apps.ChatbotConfig',
     'django.contrib.admin',
     'django.contrib.auth',
