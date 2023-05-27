@@ -33,7 +33,7 @@ Sigue los siguientes pasos para instalar y configurar el proyecto en tu entorno 
 
 1. Clona el repositorio en tu máquina local utilizando el siguiente comando:
 
-`git clone https://github.com/tu-usuario/tu-proyecto.git`
+`https://github.com/angxdes/Serenity`
 
 
 2. Accede al directorio del proyecto:
