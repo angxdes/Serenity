@@ -1,6 +1,6 @@
 <h1 align="center">Serenity</h1>
 
-##Descripción del Proyecto
+## Descripción del Proyecto
 
 <p align="center">
   El proyecto es una implementación de inteligencia artificial que busca crear expertos virtuales en diversos temas con el objetivo de ayudar a las empresas a optimizar su trabajo. Esta solución permite interactuar con estos expertos a través de chat, admitiendo el envío y análisis de diferentes tipos de archivos, como PDF, imágenes y videos.
