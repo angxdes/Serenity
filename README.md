@@ -46,6 +46,8 @@ Sigue los siguientes pasos para instalar y configurar el proyecto en tu entorno 
 5. ¡Listo! Ahora puedes ejecutar el proyecto utilizando el siguiente comando:
 
 `python3 manage.py runserver`
+o
+`python manage.py runserver`
 
 </br>
 
