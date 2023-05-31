@@ -29,34 +29,56 @@
 
 ## Instalación
 
-Sigue los siguientes pasos para instalar y configurar el proyecto en tu entorno local:
-
-1. Clona el repositorio en tu máquina local utilizando el siguiente comando:
-
-`https://github.com/angxdes/Serenity`
+<p>Sigue los siguientes pasos para instalar y configurar el proyecto en tu entorno local:</p>
 
 
-2. Accede al directorio del proyecto:
-
-`cd Serenity`
-
-
-3. Instalamos las dependencias necesarias:
-
-`pip install -r requirements.txt`
-
-
-4. Ahora entra a la carpeta del proyecto en Django:
-
-`cd Serenity`
-
-5. ¡Listo! Ahora puedes ejecutar el proyecto utilizando el siguiente comando:
-
-`python3 manage.py runserver`
-o
-`python manage.py runserver`
-
-</br>
+<ol>
+  <li>Clona el repositorio en tu máquina local utilizando el siguiente comando:</li>
+  <pre><code>git clone https://github.com/angxdes/Serenity</code></pre>
+  
+  <li>Accede al directorio del proyecto:</li>
+  <pre><code>cd Serenity</code></pre>
+  
+  <li>Crea un entorno virtual utilizando <code>venv</code> (asegúrate de tener Python 3 instalado):</li>
+  <pre><code>python3 -m venv venv</code></pre>
+  
+  <li>Activa el entorno virtual:</li>
+  <ul>
+    <li>En macOS y Linux:</li>
+    <pre><code>source venv/bin/activate</code></pre>
+    <li>En Windows:</li>
+    <pre><code>venv\Scripts\activate</code></pre>
+  </ul>
+  
+  <li>Instala las dependencias necesarias:</li>
+  <pre><code>pip install -r requirements.txt</code></pre>
+  
+  <li>Crea un archivo llamado <code>.gitignore</code> en el directorio raíz del proyecto y agrega las siguientes líneas:</li>
+  <pre><code>venv/
+*.pyc
+__pycache__/</code></pre>
+  <ol>
+  <li>Abre una terminal o línea de comandos en tu entorno de desarrollo.</li>
+  
+  <li>Navega hasta el directorio raíz de tu proyecto utilizando el comando <code>cd</code>.</li>
+  
+  <li>Crea un archivo llamado <code>.gitignore</code> utilizando el siguiente comando:</li>
+  
+  <pre><code>echo "venv/" > .gitignore</code></pre>
+  <pre><code>echo "*.pyc" >> .gitignore</code></pre>
+  <pre><code>echo "__pycache__/" >> .gitignore</code></pre>
+  
+  <li>Abre el archivo <code>.gitignore</code> en un editor de texto si deseas agregar más reglas personalizadas.</li>
+</ol>
+  
+  <li>Entra a la carpeta del proyecto en Django:</li>
+  <pre><code>cd Serenity</code></pre>
+  
+  <li>¡Listo! Ahora puedes ejecutar el proyecto utilizando el siguiente comando:</li>
+  <pre><code>python3 manage.py runserver</code></pre>
+  <p>O</p>
+  <pre><code>python manage.py runserver</code></pre>
+</ol>
 
 ## Contribución
 
