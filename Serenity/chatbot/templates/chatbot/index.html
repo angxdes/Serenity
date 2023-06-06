@@ -33,6 +33,110 @@
   <!-- Nepcha Analytics (nepcha.com) -->
   <!-- Nepcha is an easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA, and PECR. -->
   <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
+  <style>
+    /* Estilos para el chat */
+    body {
+        background-color: #f7f7f7;
+        font-family: Arial, sans-serif;
+    }
+
+    h1 {
+        text-align: center;
+        color: #fd5c70;
+    }
+
+    .chat-container {
+        width: 400px;
+        height: 300px;
+        margin: 0 auto;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        overflow-y: scroll;
+        padding: 10px;
+        background-color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+    }
+
+    .user-message {
+        align-self: flex-start;
+        background-color: #fd5c70;
+        color: #ffffff;
+        padding: 8px;
+        margin-bottom: 10px;
+        border-radius: 10px;
+    }
+
+    .bot-message {
+        align-self: flex-end;
+        background-color: #f0f0f0;
+        padding: 8px;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        position: relative;
+    }
+
+    .typing-indicator {
+        position: absolute;
+        bottom: -20px;
+        right: 10px;
+        width: 20px;
+        height: 6px;
+        background-color: #ccc;
+        border-radius: 3px;
+        animation: typing 1s infinite;
+    }
+
+    @keyframes typing {
+        0% { opacity: 0.4; }
+        50% { opacity: 1; }
+        100% { opacity: 0.4; }
+    }
+
+    .chat-input-container {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .chat-input {
+        display: flex;
+        flex-grow: 1;
+        margin-right: 10px;
+    }
+
+    .chat-input input[type="text"] {
+        flex: 1;
+        padding: 6px;
+        border: none;
+        border-radius: 5px;
+    }
+
+    .chat-input button {
+        padding: 6px;
+        background-color: #fd5c70;
+        border: none;
+        border-radius: 5px;
+        color: #ffffff;
+        cursor: pointer;
+    }
+
+    .chat-input button i {
+        margin-right: 5px;
+    }
+
+    .send-button {
+        animation: scale 0.3s linear;
+    }
+
+    @keyframes scale {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+    }
+</style>
 </head>
 
 
@@ -291,13 +395,10 @@
     <div class="container">
       <div class="row">
         <div class="col-lg-7 text-center mx-auto">
-<<<<<<< Updated upstream
           <h1 class="text-white pt-3 mt-n5">Serenity</h1>
           <p class="lead text-white mt-3">Research & Development <br/> an Intelligent System </p>
-=======
           <h1 class="text-white pt-3 mt-n5">Research and Development</h1>
           <p class="lead text-white mt-3">KMS <br/>and Artificial Intelligence </p>
->>>>>>> Stashed changes
         </div>
       </div>
     </div>
@@ -316,48 +417,30 @@
       </div>
     </div>
   </div>
-  <div class="col-xl-5 col-lg-6 col-md-7 d-flex flex-column ms-auto me-auto ms-lg-auto me-lg-5">
     <div class="card d-flex blur justify-content-center shadow-lg my-sm-0 my-sm-6 mt-8 mb-5">
       <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
         <div class="bg-gradient-primary shadow-primary border-radius-lg p-3">
-          <h3 class="text-white text-primary mb-0">Contact us</h3>
+          <h3 class="text-white text-primary mb-0">Chat with your PDF now</h3>
         </div>
       </div>
       <div class="card-body">
         <p class="pb-3">
-          For further questions, including partnership opportunities, please email hello@creative-tim.com
-          or contact using our contact form.
+          Paste or type the URL of a PDF, doesn't matter if it is in google drive or not.
         </p>
-        <form id="contact-form" method="post" autocomplete="off">
+        <form id="url_form" method="post" autocomplete="off" action="api_reader_pdf/create_embeddings_url">
           <div class="card-body p-0 my-3">
             <div class="row">
-              <div class="col-md-6">
                 <div class="input-group input-group-static mb-4">
-                  <label>Full Name</label>
-                  <input type="email" class="form-control" placeholder="Full Name">
+                  <label>Type or paste the PDF URL here:</label>
+                  <input type="text" class="form-control" placeholder="URL" id="url" name="url" required>
                 </div>
                 <div class="input-group input-group-static mb-4">
-                  <label>Angel</label>
-                  <input type="text" class="form-control" placeholder="Full Name">
+                  <label>Type a name to your file:</label>
+                  <input type="text" class="form-control" placeholder="File Name" id="nombre_archivo" name="nombre_archivo" required>
                 </div>
-                <div class="input-group input-group-static mb-4">
-                  <label>Hola</label>
-                  <input type="text" class="form-control" placeholder="Full Name">
-                </div>
-              </div>
-              <div class="col-md-6 ps-md-2">
-                <div class="input-group input-group-static mb-4">
-                  <label>Email</label>
-                  <input type="email" class="form-control" placeholder="hello@creative-tim.com">
-                </div>
-              </div>
             </div>
-            <div class="form-group mb-0 mt-md-0 mt-4">
-              <div class="input-group input-group-static mb-4">
-                <label>How can we help you?</label>
-                <textarea name="message" class="form-control" id="message" rows="6" placeholder="Describe your problem in at least 250 characters"></textarea>
-              </div>
-            </div>
+          </div>
+        </div>
             <div class="row">
               <div class="col-md-12 text-center">
                 <button type="submit" class="btn bg-gradient-primary mt-3 mb-0">Send Message</button>
@@ -365,9 +448,79 @@
             </div>
           </div>
         </form>
+        <div class="card-body">
+          <div class="chat-container" id="chat-container">
+            <!-- Aquí se mostrarán los mensajes del chat -->
+        </div>
+    
+        <div class="chat-input-container">
+            <div class="chat-input">
+                <input type="text" id="user-input" placeholder="Escribe tu mensaje...">
+                <button onclick="sendMessage()" class="send-button"><i class="fas fa-paper-plane"></i></button>
+            </div>
+        </div>
+    
+        <script>
+            // Función para enviar un mensaje
+            function sendMessage() {
+                var userInput = document.getElementById('user-input').value;
+                if (userInput === '') {
+                    return;
+                }
+                addMessage(userInput, 'user');
+                // Lógica del chatbot para generar una respuesta con delay
+                setTimeout(function() {
+                    showTypingIndicator();
+                    setTimeout(function() {
+                        var botResponse = generateBotResponse(userInput);
+                        addMessage(botResponse, 'bot');
+                        hideTypingIndicator();
+                    }, 1500);
+                }, 1000);
+                document.getElementById('user-input').value = '';
+            }
+    
+            // Función para mostrar el indicador de escritura del bot
+            function showTypingIndicator() {
+                var botMessageContainer = document.createElement('div');
+                botMessageContainer.classList.add('bot-message');
+                var typingIndicator = document.createElement('div');
+                typingIndicator.classList.add('typing-indicator');
+                botMessageContainer.appendChild(typingIndicator);
+                var chatContainer = document.getElementById('chat-container');
+                chatContainer.appendChild(botMessageContainer);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+    
+            // Función para ocultar el indicador de escritura del bot
+            function hideTypingIndicator() {
+                var typingIndicator = document.querySelector('.typing-indicator');
+                if (typingIndicator) {
+                    typingIndicator.parentNode.remove();
+                }
+            }
+    
+            // Función para añadir un mensaje al contenedor del chat
+            function addMessage(message, sender) {
+                var chatContainer = document.getElementById('chat-container');
+                var messageElement = document.createElement('div');
+                messageElement.classList.add(sender + '-message');
+                messageElement.innerHTML = message;
+                chatContainer.appendChild(messageElement);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+    
+            // Función para generar una respuesta del chatbot
+            function generateBotResponse(userInput) {
+                // Aquí puedes implementar la lógica del chatbot para generar una respuesta basada en el mensaje del usuario
+                // Puedes utilizar API's, algoritmos de procesamiento de lenguaje natural, etc.
+                // Por simplicidad, en este ejemplo simplemente se devuelve un mensaje predefinido
+                return 'Respuesta del chatbot';
+            }
+        </script>
+        </div>
       </div>
     </div>
-  </div>
 
 <!-- -------- END Content Presentation Docs ------- -->
 
@@ -718,6 +871,26 @@
 
 
 <script type="text/javascript">
+  document.getElementById("url_form").addEventListener("submit", function(event) {
+    event.preventDefault(); // Evita que el formulario se envíe de forma predeterminada
+  
+    // Realiza la solicitud AJAX para enviar los datos del formulario
+    var formData = new FormData(this);
+    var xhr = new XMLHttpRequest();
+    xhr.open(this.method, this.action, true);
+    xhr.onload = function() {
+      if (xhr.status === 200) {
+        // Maneja la respuesta del servidor
+        var response = JSON.parse(xhr.responseText);
+        var message = response.message;
+  
+        // Muestra el mensaje de respuesta en el elemento HTML
+        var responseMessage = document.getElementById("response-message");
+        responseMessage.innerHTML = message;
+      }
+    };
+    xhr.send(formData);
+  });
 
   if (document.getElementById('state1')) {
     const countUp = new CountUp('state1', document.getElementById("state1").getAttribute("countTo"));

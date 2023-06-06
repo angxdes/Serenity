@@ -32,7 +32,7 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'api_reader_pdf.apps.Api_reader_pdfConfig',
+    'api_reader_pdf.apps.ApiReaderPdfConfig',
     'chatbot.apps.ChatbotConfig',
     'django.contrib.admin',
     'django.contrib.auth',
@@ -101,6 +101,8 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+AUTH_USER_MODEL = 'api_reader_pdf.Usuario'
 
 
 # Internationalization
