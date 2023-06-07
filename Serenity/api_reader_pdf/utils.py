@@ -5,7 +5,7 @@ from PyPDF2 import PdfReader
 from .models import *
 
 
-openai.api_key = ""
+openai.api_key = "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"
 modelo = "text-davinci-003"
 tokenizer = tiktoken.get_encoding("cl100k_base")
 max_tokens = 1000

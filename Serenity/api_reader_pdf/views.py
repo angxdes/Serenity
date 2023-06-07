@@ -10,7 +10,7 @@ def create_embeddings_url(request):
         nombre_archivo = request.POST.get("nombre_archivo")
         
         if Embedding.objects.filter(nombre_archivo=nombre_archivo).exists():
-            return JsonResponse({"message": "El archivo con ese nombre ya existe"})
+            return JsonResponse({"message": "Un archivo con ese nombre ya existe"})
   
         pdf_text = pdf_to_text(url)
 
