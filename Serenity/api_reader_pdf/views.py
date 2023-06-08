@@ -5,16 +5,34 @@ from .utils import *
 
 @csrf_exempt
 def create_embeddings_url(request):
-    if request.method == "POST":
-        url = request.POST.get("url")
-        nombre_archivo = request.POST.get("nombre_archivo")
-        
-        if Embedding.objects.filter(nombre_archivo=nombre_archivo).exists():
-            return JsonResponse({"message": "Un archivo con ese nombre ya existe"})
-  
-        pdf_text = pdf_to_text(url)
+    if request.method == 'POST':
+        if request.user.is_authenticated:
+            # Usuario registrado
+            pdf_text = pdf_to_text(request.POST.get('url'))
 
-        # Obtener las partes de texto y embeddings y guardar en BD
-        pdf_dfs(nombre_archivo, pdf_text)
+            # Crear el objeto Embedding
+            embedding = Embedding(nombre_archivo=request.POST.get('nombre_archivo'),
+                                  contenido_texto=pdf_text,
+                                  embeddings=None,
+                                  usuario=request.user)
+            embedding.save()
 
-        return JsonResponse({"message": "Embeddings created successfully."})
+            return JsonResponse({"message": "Embeddings creados correctamente."}, status=200)
+        else:
+            # Usuario no registrado
+            nombre_archivo = request.POST.get('nombre_archivo')
+            embeddings_count = Embedding.objects.filter(usuario__isnull=True).count()
+            if embeddings_count >= 1:
+                return JsonResponse({"message": "Solo se permite 1 embedding para usuarios no registrados."}, status=400)
+
+            pdf_text = pdf_to_text(request.POST.get('url'))
+
+            # Crear el objeto Embedding
+            embedding = Embedding(nombre_archivo=nombre_archivo,
+                                  contenido_texto=pdf_text,
+                                  embeddings=None)
+            embedding.save()
+
+            return JsonResponse({"message": "Embeddings creados correctamente."}, status=200)
+
+    return JsonResponse({"message": "Método no permitido."}, status=405)
