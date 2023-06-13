@@ -34,7 +34,7 @@
 
 <ol>
   <li>Clona el repositorio en tu máquina local utilizando el siguiente comando:</li>
-  <pre><code>git clone https://github.com/angxdes/Serenity2.0</code></pre>
+  <pre><code>git clone https://github.com/angxdes/Serenity</code></pre>
   
   <li>Accede al directorio del proyecto:</li>
   <pre><code>cd Serenity</code></pre>
