@@ -1,38 +1,42 @@
 from django.http import JsonResponse
-from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_POST
+from django.db import transaction
 from .models import *
 from .utils import *
+from django.views.decorators.csrf import ensure_csrf_cookie
+from django.contrib.sessions.models import Session
+from django.contrib.auth.decorators import login_required
 
-@csrf_exempt
+used_sessions = set()
+
+@ensure_csrf_cookie
+@require_POST
+@transaction.atomic
 def create_embeddings_url(request):
-    if request.method == 'POST':
-        if request.user.is_authenticated:
-            # Usuario registrado
-            pdf_text = pdf_to_text(request.POST.get('url'))
+    csrf_token = request.COOKIES.get('csrftoken')
+    print(f"CSRF Token: {csrf_token}")
+    url = request.POST.get("url")
+    nombre_archivo = request.POST.get("nombre_archivo")
 
-            # Crear el objeto Embedding
-            embedding = Embedding(nombre_archivo=request.POST.get('nombre_archivo'),
-                                  contenido_texto=pdf_text,
-                                  embeddings=None,
-                                  usuario=request.user)
-            embedding.save()
-
-            return JsonResponse({"message": "Embeddings creados correctamente."}, status=200)
+    if request.user.is_authenticated:
+        try:
+            Embedding.objects.get(nombre_archivo=nombre_archivo)
+            return JsonResponse({"message": "Un archivo con ese nombre ya existe"})
+        except Embedding.DoesNotExist:
+            pdf_text = pdf_to_text(url)
+            pdf_dfs(nombre_archivo, pdf_text)
+            return JsonResponse({"message": "Embeddings created successfully."})
+    else:
+        # El usuario no está registrado, verificar si ya se ha utilizado el endpoint
+        session_key = request.session.session_key
+        if session_key is None or not UsedSession.objects.filter(session_key=session_key).exists():
+            UsedSession.objects.create(session_key=session_key)
+            try:
+                Embedding.objects.get(nombre_archivo=nombre_archivo)
+                return JsonResponse({"message": "Un archivo con ese nombre ya existe"})
+            except Embedding.DoesNotExist:
+                pdf_text = pdf_to_text(url)
+                pdf_dfs(nombre_archivo, pdf_text)
+                return JsonResponse({"message": "Embeddings created successfully."})
         else:
-            # Usuario no registrado
-            nombre_archivo = request.POST.get('nombre_archivo')
-            embeddings_count = Embedding.objects.filter(usuario__isnull=True).count()
-            if embeddings_count >= 1:
-                return JsonResponse({"message": "Solo se permite 1 embedding para usuarios no registrados."}, status=400)
-
-            pdf_text = pdf_to_text(request.POST.get('url'))
-
-            # Crear el objeto Embedding
-            embedding = Embedding(nombre_archivo=nombre_archivo,
-                                  contenido_texto=pdf_text,
-                                  embeddings=None)
-            embedding.save()
-
-            return JsonResponse({"message": "Embeddings creados correctamente."}, status=200)
-
-    return JsonResponse({"message": "Método no permitido."}, status=405)
+            return JsonResponse({"message": "No tienes permitido utilizar el endpoint nuevamente."})

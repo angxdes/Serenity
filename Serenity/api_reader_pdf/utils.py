@@ -1,11 +1,11 @@
 import pandas as pd
-import os, tiktoken, openai, io, requests
+import os, tiktoken, openai, io, requests, random, string
 import numpy as np
 from PyPDF2 import PdfReader
 from .models import *
 
 
-openai.api_key = ""
+openai.api_key = "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"
 modelo = "text-davinci-003"
 tokenizer = tiktoken.get_encoding("cl100k_base")
 max_tokens = 1000
@@ -111,3 +111,9 @@ def pdf_dfs(nombre_archivo, text):
     embedding.save()
 
     return embedding
+
+
+def generate_random_id(length=8):
+    characters = string.ascii_letters + string.digits
+    return ''.join(random.choice(characters) for _ in range(length))
+
