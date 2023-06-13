@@ -34,13 +34,26 @@
 
 <ol>
   <li>Clona el repositorio en tu máquina local utilizando el siguiente comando:</li>
-  <pre><code>git clone https://github.com/angxdes/Serenity</code></pre>
+  <pre><code>git clone https://github.com/angxdes/Serenity2.0</code></pre>
   
   <li>Accede al directorio del proyecto:</li>
   <pre><code>cd Serenity</code></pre>
   
+  <li> Crea una carpeta llamada venv </li>
+   <pre><code>mkdir venv</code></pre>
+  
+  <li>Accede al directorio del proyecto:</li>
+  <pre><code>cd venv</code></pre>
+  
   <li>Crea un entorno virtual utilizando <code>venv</code> (asegúrate de tener Python 3 instalado):</li>
-  <pre><code>python3 -m venv venv</code></pre>
+  <pre><code>python3 -m venv venv</code> o <code>python -m venv venv</code></pre>
+  
+  <li>En el archivo .gitignore introduce la carpeta venv, tu archivo debera tener una linea asi: </li>
+  <pre><code>
+  venv/
+*.pyc
+__pycache__/
+  </code></pre>
   
   <li>Activa el entorno virtual:</li>
   <ul>
@@ -52,24 +65,6 @@
   
   <li>Instala las dependencias necesarias:</li>
   <pre><code>pip install -r requirements.txt</code></pre>
-  
-  <li>Crea un archivo llamado <code>.gitignore</code> en el directorio raíz del proyecto y agrega las siguientes líneas:</li>
-  <pre><code>venv/
-*.pyc
-__pycache__/</code></pre>
-  <ol>
-  <li>Abre una terminal o línea de comandos en tu entorno de desarrollo.</li>
-  
-  <li>Navega hasta el directorio raíz de tu proyecto utilizando el comando <code>cd</code>.</li>
-  
-  <li>Crea un archivo llamado <code>.gitignore</code> utilizando el siguiente comando:</li>
-  
-  <pre><code>echo "venv/" > .gitignore</code></pre>
-  <pre><code>echo "*.pyc" >> .gitignore</code></pre>
-  <pre><code>echo "__pycache__/" >> .gitignore</code></pre>
-  
-  <li>Abre el archivo <code>.gitignore</code> en un editor de texto si deseas agregar más reglas personalizadas.</li>
-</ol>
   
   <li>Entra a la carpeta del proyecto en Django:</li>
   <pre><code>cd Serenity</code></pre>
