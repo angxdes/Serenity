@@ -148,6 +148,9 @@
     <a class="navbar-brand font-weight-bolder ms-sm-3" rel="tooltip" data-placement="bottom" target="_blank">
       Serenity
     </a>
+    {% if user.is_authenticated %}
+      <p class="nombre_usuario">Bienvenido, {{ user.username }}</p>
+    {% endif %}
     <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon mt-2">
         <span class="navbar-toggler-bar bar1"></span>
@@ -387,10 +390,6 @@
                 <div class="input-group input-group-static mb-4">
                   <label>Type or paste the PDF URL here:</label>
                   <input type="text" class="form-control" placeholder="URL" id="url" name="url" required>
-                </div>
-                <div class="input-group input-group-static mb-4">
-                  <label>Type a name to your file:</label>
-                  <input type="text" class="form-control" placeholder="File Name" id="nombre_archivo" name="nombre_archivo" required>
                 </div>
             </div>
           </div>

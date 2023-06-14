@@ -3,9 +3,10 @@ import os, tiktoken, openai, io, requests, random, string
 import numpy as np
 from PyPDF2 import PdfReader
 from .models import *
+from chatbot.models import Usuario
 
 
-openai.api_key = "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"
+openai.api_key = ""
 modelo = "text-davinci-003"
 tokenizer = tiktoken.get_encoding("cl100k_base")
 max_tokens = 1000
@@ -78,7 +79,7 @@ def split_into_many(text, max_tokens=max_tokens):
 
 
 #Funcion para agregar una nueva fila al Data Frame
-def pdf_dfs(nombre_archivo, text):
+def pdf_dfs(user_id, text):
     shortened = []
 
     # Tokenizar el texto y guardar el número de tokens en una nueva columna
@@ -107,13 +108,87 @@ def pdf_dfs(nombre_archivo, text):
         embeddings.append(chunk_embedding)
 
     # Crear una nueva instancia del modelo Embedding
-    embedding = Embedding(nombre_archivo=nombre_archivo, contenido_texto=contenido_texto, embeddings=embeddings)
+    user = Usuario.objects.get(id=user_id)
+    embedding = Embedding(usuario=user, contenido_texto=contenido_texto, embeddings=embeddings)
     embedding.save()
 
-    return embedding
 
 
-def generate_random_id(length=8):
-    characters = string.ascii_letters + string.digits
-    return ''.join(random.choice(characters) for _ in range(length))
+#Cambiar logica
+
+# def create_context(
+#     question, df, max_len=1000, size="ada"
+# ):
+#     """
+#     Create a context for a question by finding the most similar context from the dataframe
+#     """
+
+#     # Get the embeddings for the question
+#     q_embeddings = openai.Embedding.create(input=question, engine='text-embedding-ada-002')['data'][0]['embedding']
+
+#     # Get the distances from the embeddings
+#     df['distances'] = distances_from_embeddings(q_embeddings, df['embeddings'].values, distance_metric='cosine')
+
+
+#     returns = []
+#     cur_len = 0
+
+#     # Sort by distance and add the text to the context until the context is too long
+#     for i, row in df.sort_values('distances', ascending=True).iterrows():
+        
+#         # Add the length of the text to the current length
+#         cur_len += row['n_tokens'] + 4
+        
+#         # If the context is too long, break
+#         if cur_len > max_len:
+#             break
+        
+#         # Else add it to the text that is being returned
+#         returns.append(row["Contenido de texto"])
+
+#     # Return the context
+#     return "\n\n###\n\n".join(returns)
+
+
+# def answer_question(
+#     df,
+#     model="text-davinci-003",
+#     question='',
+#     historial = '',
+#     max_len=1800,
+#     size="ada",
+#     debug=False,
+#     max_tokens=500,
+#     stop_sequence=None
+# ):
+#     """
+#     Answer a question based on the most similar context from the dataframe texts
+#     """
+#     context = create_context(
+#         question,
+#         df,
+#         max_len=max_len,
+#         size=size,
+#     )
+#     # If debug, print the raw model response
+#     if debug:
+#         print("Context:\n" + context)
+#         print("\n\n")
+
+#     try:
+#         # Create a completions using the question and context
+#         response = openai.Completion.create(
+#             prompt = f"Soy un chatbot que puede leer y responder preguntas basadas en el contexto de un PDF. Si no puedo responder tu pregunta, diré 'No lo sé'. Si deseas saber mi opinión, pregunta '¿Qué piensas tú?', '¿Cuál es tu punto de vista?' o algo similar. También puedes preguntarme cómo estoy o cualquier otra pregunta abierta. ¡Estoy aquí para ayudarte! \n\nContexto: {context}\n\nPregunta: {question}\n\nHistorial de chat:\n{historial}\n\nRespuesta: ",
+#             temperature=0.4,
+#             max_tokens=max_tokens,
+#             top_p=1,
+#             frequency_penalty=0,
+#             presence_penalty=0,
+#             stop=stop_sequence,
+#             model=model,
+#         )
+#         return response["choices"][0]["text"].strip()
+#     except Exception as e:
+#         print(e)
+#         return ""
 
