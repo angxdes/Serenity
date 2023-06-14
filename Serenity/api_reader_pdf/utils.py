@@ -12,8 +12,6 @@ tokenizer = tiktoken.get_encoding("cl100k_base")
 max_tokens = 1000
 
 
-#Cambio de logica para obtencion de texto en URL's
-
 def pdf_to_text(url):
     if "drive.google.com" in url:
         file_id = url.split("/")[-2]
@@ -117,7 +115,7 @@ def pdf_dfs(user_id, text):
 #Cambiar logica
 
 # def create_context(
-#     question, df, max_len=1000, size="ada"
+#     question, id_embbeding, max_len=1000, size="ada"
 # ):
 #     """
 #     Create a context for a question by finding the most similar context from the dataframe
