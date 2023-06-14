@@ -58,7 +58,7 @@ __pycache__/
   </ul>
   
   <li>Instala las dependencias necesarias:</li>
-  <pre><code>pip install -r requirements.txt</code></pre>
+  <pre><code>python -m pip install -r requirements.txt</code></pre>
   
   <li>Entra a la carpeta del proyecto en Django:</li>
   <pre><code>cd Serenity</code></pre>
