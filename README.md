@@ -39,12 +39,6 @@
   <li>Accede al directorio del proyecto:</li>
   <pre><code>cd Serenity</code></pre>
   
-  <li> Crea una carpeta llamada venv </li>
-   <pre><code>mkdir venv</code></pre>
-  
-  <li>Accede al directorio del proyecto:</li>
-  <pre><code>cd venv</code></pre>
-  
   <li>Crea un entorno virtual utilizando <code>venv</code> (asegúrate de tener Python 3 instalado):</li>
   <pre><code>python3 -m venv venv</code> o <code>python -m venv venv</code></pre>
   
