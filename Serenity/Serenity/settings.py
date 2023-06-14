@@ -102,7 +102,7 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-AUTH_USER_MODEL = 'api_reader_pdf.Usuario'
+AUTH_USER_MODEL = 'chatbot.Usuario'
 
 
 # Internationalization
