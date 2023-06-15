@@ -4,6 +4,7 @@
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
 
 <head>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
@@ -136,6 +137,36 @@
         50% { transform: scale(1.1); }
         100% { transform: scale(1); }
     }
+
+    .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      display: none;
+    }
+  
+    .loading-spinner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border: 5px solid #f3f3f3;
+      border-top: 5px solid #3498db;
+      animation: spin 2s linear infinite;
+    }
+  
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+
+
 </style>
 </head>
 
@@ -387,90 +418,21 @@
           {% csrf_token %}
           <div class="card-body p-0 my-3">
             <div class="row">
-                <div class="input-group input-group-static mb-4">
-                  <label>Type or paste the PDF URL here:</label>
-                  <input type="text" class="form-control" placeholder="URL" id="url" name="url" required>
-                </div>
-            </div>
-          </div>
-        </div>
-            <div class="row">
-              <div class="col-md-12 text-center">
-                <button type="submit" class="btn bg-gradient-primary mt-3 mb-0">Send Message</button>
+              <div class="input-group input-group-static mb-4">
+                <label>Type or paste the PDF URL here:</label>
+                <input type="text" class="form-control" placeholder="URL" id="url" name="url" required>
               </div>
             </div>
           </div>
-        </form>
-        <div class="card-body">
-          <div class="chat-container" id="chat-container">
-            <!-- Aquí se mostrarán los mensajes del chat -->
-        </div>
-    
-        <div class="chat-input-container">
-            <div class="chat-input">
-                <input type="text" id="user-input" placeholder="Escribe tu mensaje...">
-                <button onclick="sendMessage()" class="send-button"><i class="fas fa-paper-plane"></i></button>
+          <div class="row">
+            <div class="col-md-12 text-center">
+              <button class="btn bg-gradient-primary mt-3 mb-0" id="submit-button">Send Message</button>
             </div>
-        </div>
-    
-        <script>
-            // Función para enviar un mensaje
-            function sendMessage() {
-                var userInput = document.getElementById('user-input').value;
-                if (userInput === '') {
-                    return;
-                }
-                addMessage(userInput, 'user');
-                // Lógica del chatbot para generar una respuesta con delay
-                setTimeout(function() {
-                    showTypingIndicator();
-                    setTimeout(function() {
-                        var botResponse = generateBotResponse(userInput);
-                        addMessage(botResponse, 'bot');
-                        hideTypingIndicator();
-                    }, 1500);
-                }, 1000);
-                document.getElementById('user-input').value = '';
-            }
-    
-            // Función para mostrar el indicador de escritura del bot
-            function showTypingIndicator() {
-                var botMessageContainer = document.createElement('div');
-                botMessageContainer.classList.add('bot-message');
-                var typingIndicator = document.createElement('div');
-                typingIndicator.classList.add('typing-indicator');
-                botMessageContainer.appendChild(typingIndicator);
-                var chatContainer = document.getElementById('chat-container');
-                chatContainer.appendChild(botMessageContainer);
-                chatContainer.scrollTop = chatContainer.scrollHeight;
-            }
-    
-            // Función para ocultar el indicador de escritura del bot
-            function hideTypingIndicator() {
-                var typingIndicator = document.querySelector('.typing-indicator');
-                if (typingIndicator) {
-                    typingIndicator.parentNode.remove();
-                }
-            }
-    
-            // Función para añadir un mensaje al contenedor del chat
-            function addMessage(message, sender) {
-                var chatContainer = document.getElementById('chat-container');
-                var messageElement = document.createElement('div');
-                messageElement.classList.add(sender + '-message');
-                messageElement.innerHTML = message;
-                chatContainer.appendChild(messageElement);
-                chatContainer.scrollTop = chatContainer.scrollHeight;
-            }
-    
-            // Función para generar una respuesta del chatbot
-            function generateBotResponse(userInput) {
-                // Aquí puedes implementar la lógica del chatbot para generar una respuesta basada en el mensaje del usuario
-                // Puedes utilizar API's, algoritmos de procesamiento de lenguaje natural, etc.
-                // Por simplicidad, en este ejemplo simplemente se devuelve un mensaje predefinido
-                return 'Respuesta del chatbot';
-            }
-        </script>
+          </div>
+          <div id="loading-overlay" class="loading-overlay">
+            <div class="loading-spinner"></div>
+          </div>
+        </form>
         </div>
       </div>
     </div>
@@ -823,53 +785,58 @@
 
 
 
-<script type="text/javascript">
-  document.getElementById("url_form").addEventListener("submit", function(event) {
-    event.preventDefault(); // Evita que el formulario se envíe de forma predeterminada
-  
-    // Realiza la solicitud AJAX para enviar los datos del formulario
-    var formData = new FormData(this);
-    var xhr = new XMLHttpRequest();
-    xhr.open(this.method, this.action, true);
-    xhr.onload = function() {
-      if (xhr.status === 200) {
-        // Maneja la respuesta del servidor
-        var response = JSON.parse(xhr.responseText);
-        var message = response.message;
-  
-        // Muestra el mensaje de respuesta en el elemento HTML
-        var responseMessage = document.getElementById("response-message");
-        responseMessage.innerHTML = message;
+<script>
+  $(document).ready(function() {
+    var formSubmitted = false;  // Variable para rastrear si el formulario ya se ha enviado
+    $('#url_form').submit(function(event) {
+      if (formSubmitted) {
+        event.preventDefault();  // Si el formulario ya se ha enviado, evita que se envíe nuevamente
+        return;
       }
-    };
-    xhr.send(formData);
+      formSubmitted = true;  // Marca el formulario como enviado
+      // Muestra el indicador de carga
+      $('#loading-overlay').show();
+      // Deshabilita el botón de envío para evitar envíos duplicados
+      $('#submit-button').prop('disabled', true);
+      // Envía el formulario utilizando AJAX
+      $.ajax({
+        url: $(this).attr('action'),
+        method: 'POST',
+        data: $(this).serialize(),
+        success: function(response) {
+          // Verifica el estado de respuesta
+          if (response.message === "Embeddings created successfully.") {
+            // Redirige al usuario a la URL deseada
+            var userUsername = '{{ request.user.username }}';  // Obtén el nombre de usuario del usuario autenticado
+            var redirectUrl = '/' + userUsername + '/' + response.embedding_id + '/';
+            window.location.href = redirectUrl;
+          } else {
+            // Maneja el caso de respuesta no exitosa si es necesario
+          }
+        },
+        error: function(xhr, textStatus, error) {
+          // Maneja los errores de la solicitud AJAX si es necesario
+        },
+        complete: function() {
+          // Oculta el indicador de carga cuando la solicitud AJAX se completa, ya sea con éxito o con error
+          $('#loading-overlay').hide();
+          // Habilita el botón de envío nuevamente después de un breve retraso
+          setTimeout(function() {
+            $('#submit-button').prop('disabled', false);
+          }, 500);
+          formSubmitted = false;  // Restablece el indicador de envío del formulario
+        }
+      });
+      event.preventDefault();  // Previene la acción predeterminada del evento submit
+    });
   });
-
-  if (document.getElementById('state1')) {
-    const countUp = new CountUp('state1', document.getElementById("state1").getAttribute("countTo"));
-    if (!countUp.error) {
-      countUp.start();
-    } else {
-      console.error(countUp.error);
-    }
-  }
-  if (document.getElementById('state2')) {
-    const countUp1 = new CountUp('state2', document.getElementById("state2").getAttribute("countTo"));
-    if (!countUp1.error) {
-      countUp1.start();
-    } else {
-      console.error(countUp1.error);
-    }
-  }
-  if (document.getElementById('state3')) {
-    const countUp2 = new CountUp('state3', document.getElementById("state3").getAttribute("countTo"));
-    if (!countUp2.error) {
-      countUp2.start();
-    } else {
-      console.error(countUp2.error);
-    };
-  }
 </script>
+
+
+
+
+
+
 
 </body>
 

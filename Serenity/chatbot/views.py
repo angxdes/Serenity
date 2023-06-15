@@ -6,12 +6,24 @@ from django.contrib.auth.decorators import login_required, user_passes_test
 from .models import *
 from django.views.decorators.csrf import ensure_csrf_cookie
 from django.views.decorators.csrf import csrf_protect
+from api_reader_pdf.models import *
 
 
 # Create your views here.
 
 def chatbot(request):
     return render(request, 'chatbot/index.html')
+
+@login_required
+def chat_pdf(request, user_username, embedding_id):
+    user = get_object_or_404(Usuario, username=user_username)
+    embeddings = Embedding.objects.filter(usuario=user).values_list('id', flat=True)  # Obtén una lista de los embedding_id relacionados al usuario
+
+    context = {
+        'user_username': user_username,
+        'embedding_ids': embeddings  # Cambia el nombre de la variable a 'embedding_ids'
+    }
+    return render(request, 'chatbot/chat.html', context)
 
 @csrf_protect
 @ensure_csrf_cookie
@@ -55,5 +67,6 @@ def register_view(request):
         messages.success(request, 'You have been register! Login in your new account.')
         return redirect('login')
     return render(request, 'chatbot/register.html')
+
 
         

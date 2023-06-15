@@ -13,6 +13,7 @@ used_sessions = set()
 @require_POST
 @ensure_csrf_cookie
 @transaction.atomic
+
 def create_embeddings_url(request):
     csrf_token = request.COOKIES.get('csrftoken')
     print(f"CSRF Token: {csrf_token}")
@@ -25,9 +26,15 @@ def create_embeddings_url(request):
     # Acceder al usuario autenticado
     user = request.user
     if user.is_authenticated:
+        user_username = user.username
         user_id = user.id    
         pdf_text = pdf_to_text(url)
         pdf_dfs(user_id, pdf_text)
-        return JsonResponse({"message": "Embeddings created successfully."})
+
+        # Obtener el último embedding creado para el usuario
+        embedding = Embedding.objects.filter(usuario=user).latest('id')
+
+        return JsonResponse({"message": "Embeddings created successfully.", "embedding_id": embedding.id})
 
     return JsonResponse({"message": "Authentication required."}, status=401)
+

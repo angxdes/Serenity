@@ -1,0 +1,633 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en" itemscope itemtype="http://schema.org/WebPage">
+
+<head>
+  <link rel="stylesheet" type="text/css" href="styles.css">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <link rel="apple-touch-icon" sizes="76x76" href="{% static 'chatbot/images/apple-icon.png' %}">
+  <link rel="icon" type="image/png" href="{% static 'chatbot/images/favicon.png' %}">
+
+  <title>
+    Serenity
+  </title>
+
+  <!-- Fonts and icons -->
+  <link rel="stylesheet" type="text/css" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700,900|Roboto+Slab:400,700" />
+
+  <!-- Nucleo Icons -->
+  <link href="{% static 'chatbot/css/nucleo-icons.css' %}" rel="stylesheet" />
+  <link href="{% static 'chatbot/css/nucleo-svg.css' %}" rel="stylesheet" />
+
+  <!-- Font Awesome Icons -->
+  <script src="https://kit.fontawesome.com/42d5adcbca.js" crossorigin="anonymous"></script>
+
+  <!-- Material Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Round" rel="stylesheet">
+
+  <!-- CSS Files -->
+  <link id="pagestyle" href="{% static 'chatbot/css/material-kit.css' %}" rel="stylesheet" />
+
+  <!-- Nepcha Analytics (nepcha.com) -->
+  <!-- Nepcha is an easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA, and PECR. -->
+  <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
+  <style>
+    /* Estilos para el chat */
+    body {
+        background-color: #f7f7f7;
+        font-family: Arial, sans-serif;
+    }
+
+    h1 {
+        text-align: center;
+        color: #fd5c70;
+    }
+
+    .chat-container {
+        width: 400px;
+        height: 300px;
+        margin: 0 auto;
+        border: 1px solid #ccc;
+        border-radius: 10px;
+        overflow-y: scroll;
+        padding: 10px;
+        background-color: #ffffff;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-end;
+    }
+
+    .user-message {
+        align-self: flex-start;
+        background-color: #fd5c70;
+        color: #ffffff;
+        padding: 8px;
+        margin-bottom: 10px;
+        border-radius: 10px;
+    }
+
+    .bot-message {
+        align-self: flex-end;
+        background-color: #f0f0f0;
+        padding: 8px;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        position: relative;
+    }
+
+    .typing-indicator {
+        position: absolute;
+        bottom: -20px;
+        right: 10px;
+        width: 20px;
+        height: 6px;
+        background-color: #ccc;
+        border-radius: 3px;
+        animation: typing 1s infinite;
+    }
+
+    @keyframes typing {
+        0% { opacity: 0.4; }
+        50% { opacity: 1; }
+        100% { opacity: 0.4; }
+    }
+
+    .chat-input-container {
+        display: flex;
+        justify-content: flex-start;
+        align-items: center;
+        margin-top: 10px;
+    }
+
+    .chat-input {
+        display: flex;
+        flex-grow: 1;
+        margin-right: 10px;
+    }
+
+    .chat-input input[type="text"] {
+        flex: 1;
+        padding: 6px;
+        border: none;
+        border-radius: 5px;
+    }
+
+    .chat-input button {
+        padding: 6px;
+        background-color: #fd5c70;
+        border: none;
+        border-radius: 5px;
+        color: #ffffff;
+        cursor: pointer;
+    }
+
+    .chat-input button i {
+        margin-right: 5px;
+    }
+
+    .send-button {
+        animation: scale 0.3s linear;
+    }
+
+    @keyframes scale {
+        0% { transform: scale(1); }
+        50% { transform: scale(1.1); }
+        100% { transform: scale(1); }
+    }
+</style>
+</head>
+
+
+<body class="index-page bg-gray-200">
+  <!-- Navbar -->
+<div class="container position-sticky z-index-sticky top-0"><div class="row"><div class="col-12">
+<nav class="navbar navbar-expand-lg  blur border-radius-xl top-0 z-index-fixed shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
+  <div class="container-fluid px-0">
+    <a class="navbar-brand font-weight-bolder ms-sm-3" rel="tooltip" data-placement="bottom" target="_blank">
+      Serenity
+    </a>
+    {% if user.is_authenticated %}
+      <p class="nombre_usuario">Bienvenido, {{ user.username }}</p>
+    {% endif %}
+    <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon mt-2">
+        <span class="navbar-toggler-bar bar1"></span>
+        <span class="navbar-toggler-bar bar2"></span>
+        <span class="navbar-toggler-bar bar3"></span>
+      </span>
+    </button>
+
+<div class="d-lg-none">
+  <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1">
+    Landing Pages
+  </h6>
+
+  <a href="./pages/about-us.html" class="dropdown-item border-radius-md">
+    <span>About Us</span>
+  </a>
+  <a href="./pages/contact-us.html" class="dropdown-item border-radius-md">
+    <span>Contact Us</span>
+  </a>
+  <a href="./pages/author.html" class="dropdown-item border-radius-md">
+    <span>Author</span>
+  </a>
+
+  <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1 mt-3">
+    Account
+  </h6>
+  <a href="./pages/sign-in.html" class="dropdown-item border-radius-md">
+    <span>Sign In</span>
+  </a>
+
+</div>
+
+          </div>
+        </li>
+
+        
+          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-animation dropdown-md dropdown-md-responsive p-3 border-radius-lg mt-0 mt-lg-3" aria-labelledby="dropdownMenuBlocks">
+
+  <li class="nav-item dropdown dropdown-hover dropdown-subitem">
+    <a class="dropdown-item py-2 ps-3 border-radius-md" href="./presentation.html">
+      <div class="w-100 d-flex align-items-center justify-content-between">
+        <div>
+          <h6 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">Elements</h6>
+          <span class="text-sm">See all elements</span>
+        </div>
+
+        <img src="{% static 'chatbot/images/down-arrow.svg' %}" alt="down-arrow" class="arrow">
+      </div>
+    </a>
+    <div class="dropdown-menu mt-0 py-3 px-2 mt-3">
+      <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/elements/avatars.html">
+        Avatars
+      </a>
+      <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/elements/badges.html">
+        Badges
+      </a>
+      <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/elements/breadcrumbs.html">
+        Breadcrumbs
+      </a>
+      <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/elements/buttons.html">
+        Buttons
+      </a>
+      <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/elements/dropdowns.html">
+        Dropdowns
+      </a>
+      <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/elements/progress-bars.html">
+        Progress Bars
+      </a>
+      <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/elements/toggles.html">
+        Toggles
+      </a>
+      <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/elements/typography.html">
+        Typography
+      </a>
+    </div>
+  </li>
+</div>
+
+<div class="row d-lg-none">
+  <div class="col-md-12">
+    <div class="d-flex mb-2">
+      <div class="icon h-10 me-3 d-flex mt-1">
+        <i class="ni ni-single-copy-04 text-gradient text-primary"></i>
+      </div>
+      <div class="w-100 d-flex align-items-center justify-content-between">
+        <div>
+          <h6 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">Page Sections</h6>
+        </div>
+      </div>
+    </div>
+    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/page-sections/hero-sections.html">
+      Page Headers
+    </a>
+    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/page-sections/features.html">
+      Features
+    </a>
+
+    <div class="d-flex mb-2 mt-3">
+      <div class="icon h-10 me-3 d-flex mt-1">
+        <i class="ni ni-laptop text-gradient text-primary"></i>
+      </div>
+      <div class="w-100 d-flex align-items-center justify-content-between">
+        <div>
+          <h6 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">Navigation</h6>
+        </div>
+      </div>
+    </div>
+    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/navigation/navbars.html">
+      Navbars
+    </a>
+    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/navigation/nav-tabs.html">
+      Nav Tabs
+    </a>
+    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/navigation/pagination.html">
+      Pagination
+    </a>
+
+    <div class="d-flex mb-2 mt-3">
+      <div class="icon h-10 me-3 d-flex mt-1">
+        <i class="ni ni-badge text-gradient text-primary"></i>
+      </div>
+      <div class="w-100 d-flex align-items-center justify-content-between">
+        <div>
+          <h6 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">Input Areas</h6>
+        </div>
+      </div>
+    </div>
+    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/input-areas/inputs.html">
+      Inputs
+    </a>
+    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/input-areas/forms.html">
+      Forms
+    </a>
+
+
+    <div class="d-flex mb-2 mt-3">
+      <div class="icon h-10 me-3 d-flex mt-1">
+        <i class="ni ni-notification-70 text-gradient text-primary"></i>
+      </div>
+      <div class="w-100 d-flex align-items-center justify-content-between">
+        <div>
+          <h6 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">Attention Catchers</h6>
+        </div>
+      </div>
+    </div>
+    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/attention-catchers/alerts.html">
+      Alerts
+    </a>
+    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/attention-catchers/modals.html">
+      Modals
+    </a>
+    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/attention-catchers/tooltips-popovers.html">
+      Tooltips & Popovers
+    </a>
+       
+</div>
+        
+        <li class="nav-item ms-lg-auto">
+          <a class="nav-link nav-link-icon me-2" href="https://github.com/creativetimofficial/material-kit" target="_blank">
+            <i class="fa fa-github me-1"></i>
+            <p class="d-inline text-sm z-index-1 font-weight-bold" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Star us on Github">Github</p>
+          </a>
+        </li>
+        <li class="nav-item my-auto ms-3 ms-lg-0">
+          
+          <a href="https://www.creative-tim.com/product/material-kit-pro" class="btn btn-sm  bg-gradient-primary  mb-0 me-1 mt-2 mt-md-0">Upgrade to Pro</a>
+          
+        </li>
+      </ul>
+    </div>
+  </div>
+</nav>
+<!-- End Navbar -->
+<body>
+  <div class="container">
+    <div class="links-column">
+      <h2>Enlaces</h2>
+      <button id="open-popup-btn"><i class="fas fa-plus"></i> Agregar Enlace</button>
+      <div id="popup" class="popup">
+        <div class="popup-content">
+          <span class="close">&times;</span>
+          <form id="link-form">
+            <input type="text" id="link-input" placeholder="Ingrese el enlace...">
+            <button type="submit" id="add-link-btn">Agregar</button>
+          </form>
+        </div>
+      </div>
+      {% for embedding_id in embedding_ids %}
+      <div class="link-box">
+        <a href="/{{ user_username }}/{{ embedding_id }}/"><i class="fas fa-link"></i> Archivo: {{ embedding_id }}</a>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="chatbot-column">
+      <div id="chatbox"></div>
+      <div class="input-container">
+        <input type="text" id="user-input" placeholder="Escribe un mensaje...">
+        <button id="send-btn"><i class="fas fa-paper-plane"></i></button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      var chatbox = document.getElementById('chatbox');
+      var userInput = document.getElementById('user-input');
+      var sendBtn = document.getElementById('send-btn');
+      var openPopupBtn = document.getElementById('open-popup-btn');
+      var popup = document.getElementById('popup');
+      var closeBtn = document.getElementsByClassName('close')[0];
+      var linkForm = document.getElementById('link-form');
+      var linkInput = document.getElementById('link-input');
+      var addLinkBtn = document.getElementById('add-link-btn');
+  
+      sendBtn.addEventListener('click', function() {
+        var message = userInput.value;
+        if (message.trim() !== '') {
+          var userMessage = document.createElement('div');
+          userMessage.classList.add('user-message');
+          userMessage.innerText = message;
+          chatbox.appendChild(userMessage);
+          userInput.value = '';
+  
+          // Enviar pregunta al servidor
+          sendQuestionToServer(message);
+        }
+      });
+  
+      openPopupBtn.addEventListener('click', function() {
+        popup.style.display = 'block';
+      });
+  
+      closeBtn.addEventListener('click', function() {
+        popup.style.display = 'none';
+      });
+  
+      linkForm.addEventListener('submit', function(event) {
+        event.preventDefault();
+        var linkValue = linkInput.value;
+        if (linkValue.trim() !== '') {
+          var linkBox = document.createElement('div');
+          linkBox.classList.add('link-box');
+          var link = document.createElement('a');
+          link.href = linkValue;
+          link.innerHTML = '<i class="fas fa-link"></i> ' + linkValue;
+          linkBox.appendChild(link);
+          document.querySelector('.links-column').insertBefore(linkBox, document.querySelector('.link-box'));
+          popup.style.display = 'none';
+          linkInput.value = '';
+        }
+      });
+  
+      // Agregar el evento de clic a todas las cajas de enlaces existentes
+      var linkBoxes = document.querySelectorAll('.link-box');
+      linkBoxes.forEach(function(linkBox) {
+        linkBox.addEventListener('click', function(event) {
+          // Ignorar si se hace clic en un enlace dentro de la caja
+          if (!event.target.closest('a')) {
+            var link = linkBox.querySelector('a');
+            if (link) {
+              link.click();
+            }
+          }
+        });
+      });
+  
+      // Función para enviar la pregunta al servidor
+      function sendQuestionToServer(question) {
+        fetch('/api/endpoint', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            question: question
+          })
+        })
+        .then(function(response) {
+          if (response.ok) {
+            return response.json();
+          } else {
+            throw new Error('Error en la solicitud');
+          }
+        })
+        .then(function(data) {
+          // Procesar la respuesta del servidor y mostrarla en el chatbox
+          var botMessage = document.createElement('div');
+          botMessage.classList.add('bot-message');
+          botMessage.innerText = data.answer;
+          chatbox.appendChild(botMessage);
+        })
+        .catch(function(error) {
+          console.error('Error:', error);
+        });
+      }
+    });
+  </script>  
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #f4f4f4;
+      font-family: Arial, sans-serif;
+    }
+
+    .container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 40px;
+    }
+
+    .links-column {
+      width: 40%;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      margin-right: 20px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .links-column h2 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+
+    .links-column .link-box {
+      display: flex;
+      align-items: center;
+      padding: 10px;
+      border-radius: 5px;
+      background-color: #f4f4f4;
+      margin-bottom: 10px;
+      cursor: pointer;
+    }
+
+    .links-column .link-box a {
+      text-decoration: none;
+      color: #333;
+      display: flex;
+      align-items: center;
+    }
+
+    .links-column .link-box a i {
+      margin-right: 5px;
+    }
+
+    .links-column .link-box:hover {
+      background-color: #e0e0e0;
+    }
+
+    .chatbot-column {
+      flex: 1;
+      background-color: #fff;
+      padding: 20px;
+      border-radius: 5px;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    .chatbot-column #chatbox {
+      height: 200px;
+      overflow-y: auto;
+      padding: 10px;
+      border: 1px solid #ccc;
+      margin-bottom: 10px;
+    }
+
+    .chatbot-column .input-container {
+      display: flex;
+    }
+
+    .chatbot-column .input-container input {
+      flex: 1;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px 0 0 5px;
+      outline: none;
+    }
+
+    .chatbot-column .input-container button {
+      padding: 10px;
+      border: none;
+      background-color: #4CAF50;
+      color: #fff;
+      border-radius: 0 5px 5px 0;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .chatbot-column .input-container button:hover {
+      background-color: #45a049;
+    }
+
+    /* Estilos del popup */
+    .popup {
+      display: none;
+      position: fixed;
+      z-index: 999;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+
+    .popup-content {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      background-color: #fff;
+      padding: 40px;
+      border-radius: 5px;
+      width: 400px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .close {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    /* Estilos del botón "Agregar Enlace" */
+    #open-popup-btn {
+      padding: 10px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      margin-bottom: 10px;
+    }
+
+    #open-popup-btn:hover {
+      background-color: #45a049;
+    }
+
+    /* Estilos del formulario en el popup */
+    #link-form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #link-input {
+      margin-bottom: 10px;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      outline: none;
+    }
+
+    #add-link-btn {
+      padding: 10px;
+      background-color: #4CAF50;
+      color: #fff;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      align-self: flex-start;
+      width: 100px;
+    }
+
+    #add-link-btn:hover {
+      background-color: #45a049;
+    }
+  </style>
+</body>
+</html>
