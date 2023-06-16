@@ -2,10 +2,13 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from .models import *
 from .utils import *
-from django.views.decorators.csrf import ensure_csrf_cookie
+from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
 from django.contrib.sessions.models import Session
-from django.contrib.auth.decorators import login_required
 from django.db import transaction
+from django.contrib.auth.decorators import login_required
+
+
+
 
 used_sessions = set()
 
@@ -13,7 +16,6 @@ used_sessions = set()
 @require_POST
 @ensure_csrf_cookie
 @transaction.atomic
-
 def create_embeddings_url(request):
     csrf_token = request.COOKIES.get('csrftoken')
     print(f"CSRF Token: {csrf_token}")
@@ -37,4 +39,17 @@ def create_embeddings_url(request):
         return JsonResponse({"message": "Embeddings created successfully.", "embedding_id": embedding.identificador})
 
     return JsonResponse({"message": "Authentication required."}, status=401)
+
+
+@login_required
+@require_POST
+def talk_pdf(request):
+    identificador = request.POST.get('identificador')
+    question = request.POST.get('question')
+     # Lógica para responder a la pregunta utilizando la función answer_question
+    answer = answer_question(identificador, question)
+
+    return JsonResponse({'answer': answer})
+
+
 

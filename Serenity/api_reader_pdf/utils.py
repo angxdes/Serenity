@@ -7,7 +7,7 @@ from chatbot.models import Usuario
 
 
 
-openai.api_key = "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"
+openai.api_key = "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"
 modelo = "text-davinci-003"
 tokenizer = tiktoken.get_encoding("cl100k_base")
 max_tokens = 1000
@@ -175,45 +175,44 @@ def create_context(question, identificador, max_len=1000, size="ada"):
     return "\n\n###\n\n".join(returns)
 
 
-# def answer_question(
-#     df,
-#     model="text-davinci-003",
-#     question='',
-#     historial = '',
-#     max_len=1800,
-#     size="ada",
-#     debug=False,
-#     max_tokens=500,
-#     stop_sequence=None
-# ):
-#     """
-#     Answer a question based on the most similar context from the dataframe texts
-#     """
-#     context = create_context(
-#         question,
-#         df,
-#         max_len=max_len,
-#         size=size,
-#     )
-#     # If debug, print the raw model response
-#     if debug:
-#         print("Context:\n" + context)
-#         print("\n\n")
+def answer_question(
+    identificador,
+    model="text-davinci-003",
+    question='',
+    # historial = '',
+    max_len=1800,
+    size="ada",
+    debug=False,
+    max_tokens=1000,
+    stop_sequence=None
+):
+    """
+    Answer a question based on the most similar context from the dataframe texts
+    """
+    context = create_context(
+        question,
+        identificador,
+        max_len=max_len,
+        size=size,
+    )
+    # If debug, print the raw model response
+    if debug:
+        print("Context:\n" + context)
+        print("\n\n")
 
-#     try:
-#         # Create a completions using the question and context
-#         response = openai.Completion.create(
-#             prompt = f"Soy un chatbot que puede leer y responder preguntas basadas en el contexto de un PDF. Si no puedo responder tu pregunta, diré 'No lo sé'. Si deseas saber mi opinión, pregunta '¿Qué piensas tú?', '¿Cuál es tu punto de vista?' o algo similar. También puedes preguntarme cómo estoy o cualquier otra pregunta abierta. ¡Estoy aquí para ayudarte! \n\nContexto: {context}\n\nPregunta: {question}\n\nHistorial de chat:\n{historial}\n\nRespuesta: ",
-#             temperature=0.4,
-#             max_tokens=max_tokens,
-#             top_p=1,
-#             frequency_penalty=0,
-#             presence_penalty=0,
-#             stop=stop_sequence,
-#             model=model,
-#         )
-#         return response["choices"][0]["text"].strip()
-#     except Exception as e:
-#         print(e)
-#         return ""
-
+    try:
+        # Create a completions using the question and context
+        response = openai.Completion.create(
+            prompt = f"Soy un chatbot que puede leer y responder preguntas basadas en el contexto de un PDF. Si no puedo responder tu pregunta, diré 'No lo sé'. Si deseas saber mi opinión, pregunta '¿Qué piensas tú?', '¿Cuál es tu punto de vista?' o algo similar. También puedes preguntarme cómo estoy o cualquier otra pregunta abierta. ¡Estoy aquí para ayudarte! \n\nContexto: {context}\n\nPregunta: {question}\n\nRespuesta: ",
+            temperature=0.4,
+            max_tokens=max_tokens,
+            top_p=1,
+            frequency_penalty=0,
+            presence_penalty=0,
+            stop=stop_sequence,
+            model=model,
+        )
+        return response["choices"][0]["text"].strip()
+    except Exception as e:
+        print(e)
+        return ""

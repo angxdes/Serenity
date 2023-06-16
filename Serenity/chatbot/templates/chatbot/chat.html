@@ -4,6 +4,23 @@
 <html lang="en" itemscope itemtype="http://schema.org/WebPage">
 
 <head>
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script>
+    function getCookie(name) {
+      var cookieValue = null;
+      if (document.cookie && document.cookie !== '') {
+        var cookies = document.cookie.split(';');
+        for (var i = 0; i < cookies.length; i++) {
+          var cookie = cookies[i].trim();
+          if (cookie.substring(0, name.length + 1) === (name + '=')) {
+            cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+            break;
+          }
+        }
+      }
+      return cookieValue;
+    }
+  </script>
   <link rel="stylesheet" type="text/css" href="styles.css">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
   <meta charset="utf-8" />
@@ -340,116 +357,82 @@
           </form>
         </div>
       </div>
-      {% for nombre_archivo, embedding_id in data %}
-    <div class="link-box">
-        <a href="/{{ user_username }}/{{ embedding_id }}/"><i class="fas fa-link"></i>{{ nombre_archivo }}</a>
-    </div>
-{% endfor %}
+      {% for nombre_archivo, identificador in data %}
+        <div class="link-box">
+          <a href="/{{ user_username }}/{{ identificador }}/"><i class="fas fa-link"></i>{{ nombre_archivo }}</a>
+        </div>
+      {% endfor %}
     </div>
     <div class="chatbot-column">
-      <div id="chatbox"></div>
-      <div class="input-container">
-        <input type="text" id="user-input" placeholder="Escribe un mensaje...">
-        <button id="send-btn"><i class="fas fa-paper-plane"></i></button>
-      </div>
-    </div>
+      <form id="chat-form">
+        {% csrf_token %}
+        <div id="chatbox"></div>
+        <div class="input-container">
+          <input type="text" id="user-input" placeholder="Escribe un mensaje...">
+          <button type="submit" id="send-btn"><i class="fas fa-paper-plane"></i></button>
+        </div>
+      </form>
   </div>
 
   <script>
-    document.addEventListener('DOMContentLoaded', function() {
-      var chatbox = document.getElementById('chatbox');
-      var userInput = document.getElementById('user-input');
-      var sendBtn = document.getElementById('send-btn');
-      var openPopupBtn = document.getElementById('open-popup-btn');
-      var popup = document.getElementById('popup');
-      var closeBtn = document.getElementsByClassName('close')[0];
-      var linkForm = document.getElementById('link-form');
-      var linkInput = document.getElementById('link-input');
-      var addLinkBtn = document.getElementById('add-link-btn');
-  
-      sendBtn.addEventListener('click', function() {
-        var message = userInput.value;
-        if (message.trim() !== '') {
-          var userMessage = document.createElement('div');
-          userMessage.classList.add('user-message');
-          userMessage.innerText = message;
-          chatbox.appendChild(userMessage);
-          userInput.value = '';
-  
-          // Enviar pregunta al servidor
-          sendQuestionToServer(message);
+    $(document).ready(function() {
+      var formSubmitted = false;  // Variable para rastrear si el formulario ya se ha enviado
+      $('#chat-form').submit(function(event) {
+        if (formSubmitted) {
+          event.preventDefault();  // Si el formulario ya se ha enviado, evita que se envíe nuevamente
+          return;
         }
-      });
-  
-      openPopupBtn.addEventListener('click', function() {
-        popup.style.display = 'block';
-      });
-  
-      closeBtn.addEventListener('click', function() {
-        popup.style.display = 'none';
-      });
-  
-      linkForm.addEventListener('submit', function(event) {
-        event.preventDefault();
-        var linkValue = linkInput.value;
-        if (linkValue.trim() !== '') {
-          var linkBox = document.createElement('div');
-          linkBox.classList.add('link-box');
-          var link = document.createElement('a');
-          link.href = linkValue;
-          link.innerHTML = '<i class="fas fa-link"></i> ' + linkValue;
-          linkBox.appendChild(link);
-          document.querySelector('.links-column').insertBefore(linkBox, document.querySelector('.link-box'));
-          popup.style.display = 'none';
-          linkInput.value = '';
-        }
-      });
-  
-      // Agregar el evento de clic a todas las cajas de enlaces existentes
-      var linkBoxes = document.querySelectorAll('.link-box');
-      linkBoxes.forEach(function(linkBox) {
-        linkBox.addEventListener('click', function(event) {
-          // Ignorar si se hace clic en un enlace dentro de la caja
-          if (!event.target.closest('a')) {
-            var link = linkBox.querySelector('a');
-            if (link) {
-              link.click();
-            }
-          }
-        });
-      });
-  
-      // Función para enviar la pregunta al servidor
-      function sendQuestionToServer(question) {
-        fetch('/api/endpoint', {
+        formSubmitted = true;  // Marca el formulario como enviado
+        // Muestra el indicador de carga
+        
+        // Deshabilita el botón de envío para evitar envíos duplicados
+        $('#send-btn').prop('disabled', true);
+        // Obtén el token CSRF del formulario
+        var csrfToken = $(this).find('input[name="csrfmiddlewaretoken"]').val();
+        // Obtén la pregunta del usuario
+        var question = $('#user-input').val();
+        // Obtén el identificador necesario
+        var identificador = '<obtener identificador aquí>';  // Reemplaza '<obtener identificador aquí>' con la lógica para obtener el identificador correcto
+    
+        // Envía la pregunta del usuario y el identificador a la vista Django utilizando AJAX
+        $.ajax({
+          url: '/api_reader_pdf/talk_pdf/',
           method: 'POST',
           headers: {
-            'Content-Type': 'application/json'
+            'X-CSRFToken': csrfToken
           },
-          body: JSON.stringify({
+          data: {
+            identificador: identificador,
             question: question
-          })
-        })
-        .then(function(response) {
-          if (response.ok) {
-            return response.json();
-          } else {
-            throw new Error('Error en la solicitud');
+          },
+          success: function(response) {
+            // Maneja la respuesta exitosa de la vista Django
+            // Aquí puedes mostrar la respuesta del bot en el chatbox
+          },
+          error: function(xhr, textStatus, error) {
+            // Maneja los errores de la solicitud AJAX si es necesario
+          },
+          complete: function() {
+            // Oculta el indicador de carga cuando la solicitud AJAX se completa, ya sea con éxito o con error
+            $('#loading-overlay').hide();
+            // Habilita el botón de envío nuevamente después de un breve retraso
+            setTimeout(function() {
+              $('#send-btn').prop('disabled', false);
+            }, 500);
+            formSubmitted = false;  // Restablece el indicador de envío del formulario
           }
-        })
-        .then(function(data) {
-          // Procesar la respuesta del servidor y mostrarla en el chatbox
-          var botMessage = document.createElement('div');
-          botMessage.classList.add('bot-message');
-          botMessage.innerText = data.answer;
-          chatbox.appendChild(botMessage);
-        })
-        .catch(function(error) {
-          console.error('Error:', error);
         });
-      }
-    });
-  </script>  
+        event.preventDefault();  // Previene la acción predeterminada del evento submit
+      });
+    });    
+  </script>
+  
+  
+  
+  
+  
+  
+  
 
   <style>
     * {
