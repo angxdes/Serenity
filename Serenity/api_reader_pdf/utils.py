@@ -2,11 +2,12 @@ import pandas as pd
 import os, tiktoken, openai, io, requests, random, string
 import numpy as np
 from PyPDF2 import PdfReader
-from .models import *
+from .models import Embedding
 from chatbot.models import Usuario
 
 
-openai.api_key = "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"
+
+openai.api_key = "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"
 modelo = "text-davinci-003"
 tokenizer = tiktoken.get_encoding("cl100k_base")
 max_tokens = 1000
@@ -18,17 +19,46 @@ def pdf_to_text(url):
         response = requests.get(f"https://drive.google.com/uc?id={file_id}&export=download")
         pdf_file = io.BytesIO(response.content)
         pdf_reader = PdfReader(pdf_file)
+
+        title = get_google_drive_file_name(url)
+
+        text = ''
+        for page in range(len(pdf_reader.pages)):
+            text += pdf_reader.pages[page].extract_text()
+
+        return title, text
+
     else:
         response = requests.get(url)
         pdf_file = io.BytesIO(response.content)
         pdf_reader = PdfReader(pdf_file)
 
-    text = ''
-    for page in range(len(pdf_reader.pages)):
-        text += pdf_reader.pages[page].extract_text()
+        # Obtener el título del archivo de la URL
+        title = get_file_name_from_url(url)
 
-    return text
+        text = ''
+        for page in range(len(pdf_reader.pages)):
+            text += pdf_reader.pages[page].extract_text()
 
+        return title, text
+
+def get_google_drive_file_name(url):
+    file_id = url.split("/")[-2]
+    response = requests.get(f"https://drive.google.com/uc?id={file_id}&export=download")
+    headers = response.headers
+    content_disposition = headers.get("content-disposition")
+    if content_disposition:
+        filename = content_disposition.split("; filename*=UTF-8''")[-1].strip('"')
+        return filename
+
+def get_file_name_from_url(url):
+    filename = url.split("/")[-1]
+    return filename
+
+def generar_caracter_aleatorio():
+    caracteres = string.ascii_letters + string.digits
+    caracter_aleatorio = ''.join(random.choice(caracteres) for _ in range(29))
+    return caracter_aleatorio
 
 #Funcion para limpiar lineas de texto
 def remove_newlines(serie):
@@ -77,7 +107,7 @@ def split_into_many(text, max_tokens=max_tokens):
 
 
 #Funcion para agregar una nueva fila al Data Frame
-def pdf_dfs(user_id, text):
+def pdf_dfs(user_id, text, nombre_archivo):
     shortened = []
 
     # Tokenizar el texto y guardar el número de tokens en una nueva columna
@@ -106,46 +136,43 @@ def pdf_dfs(user_id, text):
         embeddings.append(chunk_embedding)
 
     # Crear una nueva instancia del modelo Embedding
+    identificador = generar_caracter_aleatorio()
     user = Usuario.objects.get(id=user_id)
-    embedding = Embedding(usuario=user, contenido_texto=contenido_texto, embeddings=embeddings)
+    embedding = Embedding(usuario=user, contenido_texto=contenido_texto, embeddings=embeddings, nombre_archivo=nombre_archivo, identificador=identificador)
     embedding.save()
 
+def create_context(question, identificador, max_len=1000, size="ada"):
+    """
+    Create a context for a question by finding the most similar context from the database
+    """
 
+    # Get the embeddings for the question
+    q_embeddings = openai.Embedding.create(input=question, engine='text-embedding-ada-002')['data'][0]['embedding']
 
-#Cambiar logica
+    # Get the embeddings and chunks from the database
+    embeddings_chunks = Embedding.objects.filter(identificador=identificador).values_list('embeddings', 'contenido_texto')
 
-# def create_context(
-#     question, id_embbeding, max_len=1000, size="ada"
-# ):
-#     """
-#     Create a context for a question by finding the most similar context from the dataframe
-#     """
+    returns = []
+    cur_len = 0
 
-#     # Get the embeddings for the question
-#     q_embeddings = openai.Embedding.create(input=question, engine='text-embedding-ada-002')['data'][0]['embedding']
+    # Sort by distance and add the text to the context until the context is too long
+    sorted_embeddings_chunks = sorted(embeddings_chunks, key=lambda x: openai.distance(x[0], q_embeddings))
 
-#     # Get the distances from the embeddings
-#     df['distances'] = distances_from_embeddings(q_embeddings, df['embeddings'].values, distance_metric='cosine')
+    for embedding, chunk in sorted_embeddings_chunks:
+        n_tokens = len(chunk)
 
+        # Add the length of the text to the current length
+        cur_len += n_tokens + 4
 
-#     returns = []
-#     cur_len = 0
+        # If the context is too long, break
+        if cur_len > max_len:
+            break
 
-#     # Sort by distance and add the text to the context until the context is too long
-#     for i, row in df.sort_values('distances', ascending=True).iterrows():
-        
-#         # Add the length of the text to the current length
-#         cur_len += row['n_tokens'] + 4
-        
-#         # If the context is too long, break
-#         if cur_len > max_len:
-#             break
-        
-#         # Else add it to the text that is being returned
-#         returns.append(row["Contenido de texto"])
+        # Else add it to the text that is being returned
+        returns.append(chunk)
 
-#     # Return the context
-#     return "\n\n###\n\n".join(returns)
+    # Return the context
+    return "\n\n###\n\n".join(returns)
 
 
 # def answer_question(

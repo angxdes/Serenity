@@ -340,11 +340,11 @@
           </form>
         </div>
       </div>
-      {% for embedding_id in embedding_ids %}
-      <div class="link-box">
-        <a href="/{{ user_username }}/{{ embedding_id }}/"><i class="fas fa-link"></i> Archivo: {{ embedding_id }}</a>
-      </div>
-      {% endfor %}
+      {% for nombre_archivo, embedding_id in data %}
+    <div class="link-box">
+        <a href="/{{ user_username }}/{{ embedding_id }}/"><i class="fas fa-link"></i>{{ nombre_archivo }}</a>
+    </div>
+{% endfor %}
     </div>
     <div class="chatbot-column">
       <div id="chatbox"></div>

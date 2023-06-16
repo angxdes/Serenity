@@ -15,13 +15,14 @@ def chatbot(request):
     return render(request, 'chatbot/index.html')
 
 @login_required
-def chat_pdf(request, user_username, embedding_id):
+def chat_pdf(request, user_username, identificador):
     user = get_object_or_404(Usuario, username=user_username)
-    embeddings = Embedding.objects.filter(usuario=user).values_list('id', flat=True)  # Obtén una lista de los embedding_id relacionados al usuario
-
+    nombre_archivos = list(Embedding.objects.filter(usuario=user).values_list('nombre_archivo', flat=True))
+    identificador = list(Embedding.objects.filter(usuario=user).values_list('identificador', flat=True))
+    combined_data = zip(nombre_archivos, identificador)
     context = {
-        'user_username': user_username,
-        'embedding_ids': embeddings  # Cambia el nombre de la variable a 'embedding_ids'
+    'user_username': user_username,
+    'data': combined_data,
     }
     return render(request, 'chatbot/chat.html', context)
 

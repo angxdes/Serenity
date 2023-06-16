@@ -28,13 +28,13 @@ def create_embeddings_url(request):
     if user.is_authenticated:
         user_username = user.username
         user_id = user.id    
-        pdf_text = pdf_to_text(url)
-        pdf_dfs(user_id, pdf_text)
+        nombre_archivo, pdf_text  = pdf_to_text(url)
+        pdf_dfs(user_id, pdf_text, nombre_archivo)
 
         # Obtener el último embedding creado para el usuario
         embedding = Embedding.objects.filter(usuario=user).latest('id')
 
-        return JsonResponse({"message": "Embeddings created successfully.", "embedding_id": embedding.id})
+        return JsonResponse({"message": "Embeddings created successfully.", "embedding_id": embedding.identificador})
 
     return JsonResponse({"message": "Authentication required."}, status=401)
 

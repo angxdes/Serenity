@@ -396,11 +396,13 @@
               </div>
             </div>
             <div class="card-body">
+              {% if message %}
               {% for message in messages %}
               <div class="alert alert-danger">
                 {{ message }}
               </div>
               {% endfor %}
+              {% endif %}
               <form role="form" class="text-start" method="POST" action="{% url 'register' %}" id="register-form">
                 {% csrf_token %}
                 <div class="input-group input-group-outline my-3">
