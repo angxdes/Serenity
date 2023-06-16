@@ -62,6 +62,8 @@ __pycache__/
   
   <li>Entra a la carpeta del proyecto en Django:</li>
   <pre><code>cd Serenity</code></pre>
+  <li>Crea la BD</li>
+  <pre><code>python manage.py migrate</code></pre>
   
   <li>¡Listo! Ahora puedes ejecutar el proyecto utilizando el siguiente comando:</li>
   <pre><code>python3 manage.py runserver</code></pre>
