@@ -18,11 +18,12 @@ def chatbot(request):
 def chat_pdf(request, user_username, identificador):
     user = get_object_or_404(Usuario, username=user_username)
     nombre_archivos = list(Embedding.objects.filter(usuario=user).values_list('nombre_archivo', flat=True))
-    identificador = list(Embedding.objects.filter(usuario=user).values_list('identificador', flat=True))
-    combined_data = zip(nombre_archivos, identificador)
+    identificadores = list(Embedding.objects.filter(usuario=user).values_list('identificador', flat=True))
+    combined_data = zip(nombre_archivos, identificadores)
     context = {
     'user_username': user_username,
     'data': combined_data,
+    'identificador':  identificador,
     }
     return render(request, 'chatbot/chat.html', context)
 

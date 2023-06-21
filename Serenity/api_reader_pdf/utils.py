@@ -7,7 +7,7 @@ from chatbot.models import Usuario
 
 
 
-openai.api_key = "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"
+openai.api_key = "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"
 modelo = "text-davinci-003"
 tokenizer = tiktoken.get_encoding("cl100k_base")
 max_tokens = 1000

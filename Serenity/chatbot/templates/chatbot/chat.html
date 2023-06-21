@@ -363,8 +363,9 @@
         </div>
       {% endfor %}
     </div>
-    <div class="chatbot-column">
-      <form id="chat-form">
+    <div class="chatbot-column"
+    <p>{{identificador}}</p>
+      <form id="chat-form" method="post" autocomplete="off" action="/api_reader_pdf/talk_pdf/">
         {% csrf_token %}
         <div id="chatbox"></div>
         <div class="input-container">
@@ -392,7 +393,7 @@
         // Obtén la pregunta del usuario
         var question = $('#user-input').val();
         // Obtén el identificador necesario
-        var identificador = '<obtener identificador aquí>';  // Reemplaza '<obtener identificador aquí>' con la lógica para obtener el identificador correcto
+        var identificador = "{{identificador}}";  
     
         // Envía la pregunta del usuario y el identificador a la vista Django utilizando AJAX
         $.ajax({
