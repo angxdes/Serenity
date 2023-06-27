@@ -183,16 +183,6 @@
         </div>
       </div>
     </div>
-
-    <form method="POST" action="{% url 'api_reader_pdf:talk_pdf' %}">
-      {% csrf_token %}
-      
-      <input type="text" name="identificador" placeholder="Identificador" required>
-      <br>
-      <input type="text" name="question" placeholder="Pregunta" required>
-      <br>
-      <button type="submit">Enviar</button>
-    </form>
     
     {% endif %}
 
