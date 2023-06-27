@@ -2,13 +2,10 @@ from django.http import JsonResponse
 from django.views.decorators.http import require_POST
 from .models import *
 from .utils import *
-from django.views.decorators.csrf import ensure_csrf_cookie, csrf_exempt
+from django.views.decorators.csrf import ensure_csrf_cookie
 from django.contrib.sessions.models import Session
 from django.db import transaction
 from django.contrib.auth.decorators import login_required
-
-
-
 
 used_sessions = set()
 
@@ -46,10 +43,9 @@ def create_embeddings_url(request):
 def talk_pdf(request):
     identificador = request.POST.get('identificador')
     question = request.POST.get('question')
-     # Lógica para responder a la pregunta utilizando la función answer_question
     answer = answer_question(identificador, question)
 
-    return JsonResponse({'answer': answer})
+    return JsonResponse({'answer': answer}) 
 
 
 

@@ -4,10 +4,12 @@ import numpy as np
 from PyPDF2 import PdfReader
 from .models import Embedding
 from chatbot.models import Usuario
+from sklearn.metrics.pairwise import cosine_similarity
 
 
 
-openai.api_key = "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"
+
+openai.api_key = "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"
 modelo = "text-davinci-003"
 tokenizer = tiktoken.get_encoding("cl100k_base")
 max_tokens = 1000
@@ -106,7 +108,7 @@ def split_into_many(text, max_tokens=max_tokens):
     return chunks
 
 
-#Funcion para agregar una nueva fila al Data Frame
+#Funcion para agregar un nuevo chunk a BD
 def pdf_dfs(user_id, text, nombre_archivo):
     shortened = []
 
@@ -141,25 +143,30 @@ def pdf_dfs(user_id, text, nombre_archivo):
     embedding = Embedding(usuario=user, contenido_texto=contenido_texto, embeddings=embeddings, nombre_archivo=nombre_archivo, identificador=identificador)
     embedding.save()
 
+
+
+
 def create_context(question, identificador, max_len=1000, size="ada"):
     """
     Create a context for a question by finding the most similar context from the database
     """
 
     # Get the embeddings for the question
-    q_embeddings = openai.Embedding.create(input=question, engine='text-embedding-ada-002')['data'][0]['embedding']
+    q_embedding = openai.Embedding.create(input=question, engine='text-embedding-ada-002')['data'][0]['embedding']
 
     # Get the embeddings and chunks from the database
-    embeddings_chunks = Embedding.objects.filter(identificador=identificador).values_list('embeddings', 'contenido_texto')
+    embeddings_chunks = Embedding.objects.filter(identificador=identificador).values('embeddings', 'contenido_texto')
 
     returns = []
     cur_len = 0
 
-    # Sort by distance and add the text to the context until the context is too long
-    sorted_embeddings_chunks = sorted(embeddings_chunks, key=lambda x: openai.distance(x[0], q_embeddings))
+    # Sort by similarity and add the text to the context until the context is too long
+    sorted_embeddings_chunks = sorted(embeddings_chunks, key=lambda x: cosine_similarity(np.array(x['embeddings']), np.array(q_embedding).reshape(1, -1))[0][0], reverse=True)
 
-    for embedding, chunk in sorted_embeddings_chunks:
-        n_tokens = len(chunk)
+    for chunk in sorted_embeddings_chunks:
+        chunk_embedding = chunk['embeddings']
+        chunk_text = chunk['contenido_texto']
+        n_tokens = len(chunk_embedding)
 
         # Add the length of the text to the current length
         cur_len += n_tokens + 4
@@ -169,32 +176,27 @@ def create_context(question, identificador, max_len=1000, size="ada"):
             break
 
         # Else add it to the text that is being returned
-        returns.append(chunk)
+        returns.append(chunk_text)
 
     # Return the context
     return "\n\n###\n\n".join(returns)
 
 
-def answer_question(
-    identificador,
-    model="text-davinci-003",
-    question='',
-    # historial = '',
-    max_len=1800,
-    size="ada",
-    debug=False,
-    max_tokens=1000,
-    stop_sequence=None
-):
+
+
+
+
+def answer_question(identificador, model="text-davinci-003", question='', max_len=1800, size="ada", debug=False, max_tokens=1000, stop_sequence=None):
     """
     Answer a question based on the most similar context from the dataframe texts
     """
-    context = create_context(
-        question,
-        identificador,
-        max_len=max_len,
-        size=size,
-    )
+    context_index = create_context(question, identificador, size=size)
+
+    if context_index == -1:
+        return "No lo sé"
+
+    context = Embedding.objects.filter(identificador=identificador).values_list('contenido_texto', flat=True)[context_index]
+
     # If debug, print the raw model response
     if debug:
         print("Context:\n" + context)

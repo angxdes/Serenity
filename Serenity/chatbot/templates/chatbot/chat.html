@@ -155,287 +155,7 @@
         50% { transform: scale(1.1); }
         100% { transform: scale(1); }
     }
-</style>
-</head>
 
-
-<body class="index-page bg-gray-200">
-  <!-- Navbar -->
-<div class="container position-sticky z-index-sticky top-0"><div class="row"><div class="col-12">
-<nav class="navbar navbar-expand-lg  blur border-radius-xl top-0 z-index-fixed shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
-  <div class="container-fluid px-0">
-    <a class="navbar-brand font-weight-bolder ms-sm-3" rel="tooltip" data-placement="bottom" target="_blank">
-      Serenity
-    </a>
-    {% if user.is_authenticated %}
-      <p class="nombre_usuario">Bienvenido, {{ user.username }}</p>
-    {% endif %}
-    <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon mt-2">
-        <span class="navbar-toggler-bar bar1"></span>
-        <span class="navbar-toggler-bar bar2"></span>
-        <span class="navbar-toggler-bar bar3"></span>
-      </span>
-    </button>
-
-<div class="d-lg-none">
-  <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1">
-    Landing Pages
-  </h6>
-
-  <a href="./pages/about-us.html" class="dropdown-item border-radius-md">
-    <span>About Us</span>
-  </a>
-  <a href="./pages/contact-us.html" class="dropdown-item border-radius-md">
-    <span>Contact Us</span>
-  </a>
-  <a href="./pages/author.html" class="dropdown-item border-radius-md">
-    <span>Author</span>
-  </a>
-
-  <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1 mt-3">
-    Account
-  </h6>
-  <a href="./pages/sign-in.html" class="dropdown-item border-radius-md">
-    <span>Sign In</span>
-  </a>
-
-</div>
-
-          </div>
-        </li>
-
-        
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-animation dropdown-md dropdown-md-responsive p-3 border-radius-lg mt-0 mt-lg-3" aria-labelledby="dropdownMenuBlocks">
-
-  <li class="nav-item dropdown dropdown-hover dropdown-subitem">
-    <a class="dropdown-item py-2 ps-3 border-radius-md" href="./presentation.html">
-      <div class="w-100 d-flex align-items-center justify-content-between">
-        <div>
-          <h6 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">Elements</h6>
-          <span class="text-sm">See all elements</span>
-        </div>
-
-        <img src="{% static 'chatbot/images/down-arrow.svg' %}" alt="down-arrow" class="arrow">
-      </div>
-    </a>
-    <div class="dropdown-menu mt-0 py-3 px-2 mt-3">
-      <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/elements/avatars.html">
-        Avatars
-      </a>
-      <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/elements/badges.html">
-        Badges
-      </a>
-      <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/elements/breadcrumbs.html">
-        Breadcrumbs
-      </a>
-      <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/elements/buttons.html">
-        Buttons
-      </a>
-      <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/elements/dropdowns.html">
-        Dropdowns
-      </a>
-      <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/elements/progress-bars.html">
-        Progress Bars
-      </a>
-      <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/elements/toggles.html">
-        Toggles
-      </a>
-      <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/elements/typography.html">
-        Typography
-      </a>
-    </div>
-  </li>
-</div>
-
-<div class="row d-lg-none">
-  <div class="col-md-12">
-    <div class="d-flex mb-2">
-      <div class="icon h-10 me-3 d-flex mt-1">
-        <i class="ni ni-single-copy-04 text-gradient text-primary"></i>
-      </div>
-      <div class="w-100 d-flex align-items-center justify-content-between">
-        <div>
-          <h6 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">Page Sections</h6>
-        </div>
-      </div>
-    </div>
-    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/page-sections/hero-sections.html">
-      Page Headers
-    </a>
-    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/page-sections/features.html">
-      Features
-    </a>
-
-    <div class="d-flex mb-2 mt-3">
-      <div class="icon h-10 me-3 d-flex mt-1">
-        <i class="ni ni-laptop text-gradient text-primary"></i>
-      </div>
-      <div class="w-100 d-flex align-items-center justify-content-between">
-        <div>
-          <h6 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">Navigation</h6>
-        </div>
-      </div>
-    </div>
-    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/navigation/navbars.html">
-      Navbars
-    </a>
-    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/navigation/nav-tabs.html">
-      Nav Tabs
-    </a>
-    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/navigation/pagination.html">
-      Pagination
-    </a>
-
-    <div class="d-flex mb-2 mt-3">
-      <div class="icon h-10 me-3 d-flex mt-1">
-        <i class="ni ni-badge text-gradient text-primary"></i>
-      </div>
-      <div class="w-100 d-flex align-items-center justify-content-between">
-        <div>
-          <h6 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">Input Areas</h6>
-        </div>
-      </div>
-    </div>
-    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/input-areas/inputs.html">
-      Inputs
-    </a>
-    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/input-areas/forms.html">
-      Forms
-    </a>
-
-
-    <div class="d-flex mb-2 mt-3">
-      <div class="icon h-10 me-3 d-flex mt-1">
-        <i class="ni ni-notification-70 text-gradient text-primary"></i>
-      </div>
-      <div class="w-100 d-flex align-items-center justify-content-between">
-        <div>
-          <h6 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">Attention Catchers</h6>
-        </div>
-      </div>
-    </div>
-    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/attention-catchers/alerts.html">
-      Alerts
-    </a>
-    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/attention-catchers/modals.html">
-      Modals
-    </a>
-    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/attention-catchers/tooltips-popovers.html">
-      Tooltips & Popovers
-    </a>
-       
-</div>
-        
-        <li class="nav-item ms-lg-auto">
-          <a class="nav-link nav-link-icon me-2" href="https://github.com/creativetimofficial/material-kit" target="_blank">
-            <i class="fa fa-github me-1"></i>
-            <p class="d-inline text-sm z-index-1 font-weight-bold" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Star us on Github">Github</p>
-          </a>
-        </li>
-        <li class="nav-item my-auto ms-3 ms-lg-0">
-          
-          <a href="https://www.creative-tim.com/product/material-kit-pro" class="btn btn-sm  bg-gradient-primary  mb-0 me-1 mt-2 mt-md-0">Upgrade to Pro</a>
-          
-        </li>
-      </ul>
-    </div>
-  </div>
-</nav>
-<!-- End Navbar -->
-<body>
-  <div class="container">
-    <div class="links-column">
-      <h2>Enlaces</h2>
-      <button id="open-popup-btn"><i class="fas fa-plus"></i> Agregar Enlace</button>
-      <div id="popup" class="popup">
-        <div class="popup-content">
-          <span class="close">&times;</span>
-          <form id="link-form">
-            <input type="text" id="link-input" placeholder="Ingrese el enlace...">
-            <button type="submit" id="add-link-btn">Agregar</button>
-          </form>
-        </div>
-      </div>
-      {% for nombre_archivo, identificador in data %}
-        <div class="link-box">
-          <a href="/{{ user_username }}/{{ identificador }}/"><i class="fas fa-link"></i>{{ nombre_archivo }}</a>
-        </div>
-      {% endfor %}
-    </div>
-    <div class="chatbot-column"
-    <p>{{identificador}}</p>
-      <form id="chat-form" method="post" autocomplete="off" action="/api_reader_pdf/talk_pdf/">
-        {% csrf_token %}
-        <div id="chatbox"></div>
-        <div class="input-container">
-          <input type="text" id="user-input" placeholder="Escribe un mensaje...">
-          <button type="submit" id="send-btn"><i class="fas fa-paper-plane"></i></button>
-        </div>
-      </form>
-  </div>
-
-  <script>
-    $(document).ready(function() {
-      var formSubmitted = false;  // Variable para rastrear si el formulario ya se ha enviado
-      $('#chat-form').submit(function(event) {
-        if (formSubmitted) {
-          event.preventDefault();  // Si el formulario ya se ha enviado, evita que se envíe nuevamente
-          return;
-        }
-        formSubmitted = true;  // Marca el formulario como enviado
-        // Muestra el indicador de carga
-        
-        // Deshabilita el botón de envío para evitar envíos duplicados
-        $('#send-btn').prop('disabled', true);
-        // Obtén el token CSRF del formulario
-        var csrfToken = $(this).find('input[name="csrfmiddlewaretoken"]').val();
-        // Obtén la pregunta del usuario
-        var question = $('#user-input').val();
-        // Obtén el identificador necesario
-        var identificador = "{{identificador}}";  
-    
-        // Envía la pregunta del usuario y el identificador a la vista Django utilizando AJAX
-        $.ajax({
-          url: '/api_reader_pdf/talk_pdf/',
-          method: 'POST',
-          headers: {
-            'X-CSRFToken': csrfToken
-          },
-          data: {
-            identificador: identificador,
-            question: question
-          },
-          success: function(response) {
-            // Maneja la respuesta exitosa de la vista Django
-            // Aquí puedes mostrar la respuesta del bot en el chatbox
-          },
-          error: function(xhr, textStatus, error) {
-            // Maneja los errores de la solicitud AJAX si es necesario
-          },
-          complete: function() {
-            // Oculta el indicador de carga cuando la solicitud AJAX se completa, ya sea con éxito o con error
-            $('#loading-overlay').hide();
-            // Habilita el botón de envío nuevamente después de un breve retraso
-            setTimeout(function() {
-              $('#send-btn').prop('disabled', false);
-            }, 500);
-            formSubmitted = false;  // Restablece el indicador de envío del formulario
-          }
-        });
-        event.preventDefault();  // Previene la acción predeterminada del evento submit
-      });
-    });    
-  </script>
-  
-  
-  
-  
-  
-  
-  
-
-  <style>
     * {
       margin: 0;
       padding: 0;
@@ -612,6 +332,74 @@
     #add-link-btn:hover {
       background-color: #45a049;
     }
-  </style>
+</style>
+</head>
+
+
+<body class="index-page bg-gray-200">
+  <!-- Navbar -->
+<div class="container position-sticky z-index-sticky top-0"><div class="row"><div class="col-12">
+  <nav class="navbar navbar-expand-lg  blur border-radius-xl top-0 z-index-fixed shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
+    <div class="container-fluid px-0">
+      <a class="navbar-brand font-weight-bolder ms-sm-3" rel="tooltip" data-placement="bottom" target="_blank">
+        Serenity
+      </a>
+      {% if user.is_authenticated %}
+        <p class="nombre_usuario">Bienvenido, {{ user.username }}</p>
+      {% endif %}
+      <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0 ms-lg-12 ps-lg-5" id="navigation">
+        <ul class="navbar-nav navbar-nav-hover ms-auto">
+          <li class="nav-item my-auto ms-3 ms-lg-0">
+            <a href="/" class="btn btn-sm  bg-gradient-primary  mb-0 me-1 mt-2 mt-md-0">Home</a>
+          </li>
+          {% if not user.is_authenticated %}
+          <li class="nav-item my-auto ms-3 ms-lg-0">
+            <a href="/register" class="btn btn-sm  bg-gradient-primary  mb-0 me-1 mt-2 mt-md-0">Register</a>
+          </li>
+          <li class="nav-item my-auto ms-3 ms-lg-0">
+            <a href="/login" class="btn btn-sm  bg-gradient-primary  mb-0 me-1 mt-2 mt-md-0">Login</a>
+          </li>
+          {% endif %}
+          {% if user.is_authenticated %}
+          <li class="nav-item my-auto ms-3 ms-lg-0">
+            <a href="{% url 'logout' %}" class="btn btn-sm  bg-gradient-primary  mb-0 me-1 mt-2 mt-md-0">Logout</a>
+          </li>
+          {% endif %}
+        </ul>
+        
+      </div>
+  </nav>
+<!-- End Navbar -->
+<body>
+  <div class="container">
+    <div class="links-column">
+      <h2>Enlaces</h2>
+      <button id="open-popup-btn"><i class="fas fa-plus"></i> Agregar Enlace</button>
+      <div id="popup" class="popup">
+        <div class="popup-content">
+          <span class="close">&times;</span>
+          <form id="link-form">
+            <input type="text" id="link-input" placeholder="Ingrese el enlace...">
+            <button type="submit" id="add-link-btn">Agregar</button>
+          </form>
+        </div>
+      </div>
+      {% for nombre_archivo, identificador in data %}
+        <div class="link-box">
+          <a href="/{{ user_username }}/{{ identificador }}/"><i class="fas fa-link"></i>{{ nombre_archivo }}</a>
+        </div>
+      {% endfor %}
+    </div>
+    <div class="chatbot-column"
+    <p>{{identificador}}</p>
+      <form id="chat-form" method="post" autocomplete="off">
+        {% csrf_token %}
+        <div id="chatbox"></div>
+        <div class="input-container">
+          <input type="text" id="user-input" placeholder="Escribe un mensaje...">
+          <button type="submit" id="send-btn"><i class="fas fa-paper-plane"></i></button>
+        </div>
+      </form>
+  </div>
 </body>
 </html>

@@ -12,7 +12,22 @@ from api_reader_pdf.models import *
 # Create your views here.
 
 def chatbot(request):
-    return render(request, 'chatbot/index.html')
+    if request.user.is_authenticated:
+        user = request.user
+        nombre_archivos = list(Embedding.objects.filter(usuario=user).values_list('nombre_archivo', flat=True))
+        identificadores = list(Embedding.objects.filter(usuario=user).values_list('identificador', flat=True))
+        combined_data = zip(nombre_archivos, identificadores)
+        context = {'nombre_archivos': nombre_archivos, 'identificadores': identificadores, 'data': combined_data}
+        return render(request, 'chatbot/index.html', context)
+    else:
+        return render(request, 'chatbot/index.html')
+
+def logout_view(request):
+    logout(request)
+    return redirect('/')
+
+def ht(request):
+    return render(request, 'chatbot/in.html')
 
 @login_required
 def chat_pdf(request, user_username, identificador):

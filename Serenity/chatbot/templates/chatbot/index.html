@@ -35,139 +35,23 @@
   <!-- Nepcha is an easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA, and PECR. -->
   <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
   <style>
-    /* Estilos para el chat */
-    body {
-        background-color: #f7f7f7;
-        font-family: Arial, sans-serif;
+    .box_gg {
+      background-color: rgba(0, 0, 0, 0.5); /* Cambia el valor de la transparencia ajustando el último número */
+      padding: 10px;
+      margin-bottom: 10px;
+      border-radius: 5px;
+      color: white;
     }
-
-    h1 {
-        text-align: center;
-        color: #fd5c70;
+    
+    .box_gg a {
+      color: white;
+      text-decoration: none;
     }
-
-    .chat-container {
-        width: 400px;
-        height: 300px;
-        margin: 0 auto;
-        border: 1px solid #ccc;
-        border-radius: 10px;
-        overflow-y: scroll;
-        padding: 10px;
-        background-color: #ffffff;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
+    
+    .box_gg a:hover {
+      text-decoration: underline;
     }
-
-    .user-message {
-        align-self: flex-start;
-        background-color: #fd5c70;
-        color: #ffffff;
-        padding: 8px;
-        margin-bottom: 10px;
-        border-radius: 10px;
-    }
-
-    .bot-message {
-        align-self: flex-end;
-        background-color: #f0f0f0;
-        padding: 8px;
-        margin-bottom: 10px;
-        border-radius: 10px;
-        position: relative;
-    }
-
-    .typing-indicator {
-        position: absolute;
-        bottom: -20px;
-        right: 10px;
-        width: 20px;
-        height: 6px;
-        background-color: #ccc;
-        border-radius: 3px;
-        animation: typing 1s infinite;
-    }
-
-    @keyframes typing {
-        0% { opacity: 0.4; }
-        50% { opacity: 1; }
-        100% { opacity: 0.4; }
-    }
-
-    .chat-input-container {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        margin-top: 10px;
-    }
-
-    .chat-input {
-        display: flex;
-        flex-grow: 1;
-        margin-right: 10px;
-    }
-
-    .chat-input input[type="text"] {
-        flex: 1;
-        padding: 6px;
-        border: none;
-        border-radius: 5px;
-    }
-
-    .chat-input button {
-        padding: 6px;
-        background-color: #fd5c70;
-        border: none;
-        border-radius: 5px;
-        color: #ffffff;
-        cursor: pointer;
-    }
-
-    .chat-input button i {
-        margin-right: 5px;
-    }
-
-    .send-button {
-        animation: scale 0.3s linear;
-    }
-
-    @keyframes scale {
-        0% { transform: scale(1); }
-        50% { transform: scale(1.1); }
-        100% { transform: scale(1); }
-    }
-
-    .loading-overlay {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background-color: rgba(0, 0, 0, 0.5);
-      display: none;
-    }
-  
-    .loading-spinner {
-      position: absolute;
-      top: 50%;
-      left: 50%;
-      transform: translate(-50%, -50%);
-      width: 50px;
-      height: 50px;
-      border-radius: 50%;
-      border: 5px solid #f3f3f3;
-      border-top: 5px solid #3498db;
-      animation: spin 2s linear infinite;
-    }
-  
-    @keyframes spin {
-      0% { transform: rotate(0deg); }
-      100% { transform: rotate(360deg); }
-    }
-
-
-</style>
+  </style>
 </head>
 
 
@@ -182,177 +66,29 @@
     {% if user.is_authenticated %}
       <p class="nombre_usuario">Bienvenido, {{ user.username }}</p>
     {% endif %}
-    <button class="navbar-toggler shadow-none ms-2" type="button" data-bs-toggle="collapse" data-bs-target="#navigation" aria-controls="navigation" aria-expanded="false" aria-label="Toggle navigation">
-      <span class="navbar-toggler-icon mt-2">
-        <span class="navbar-toggler-bar bar1"></span>
-        <span class="navbar-toggler-bar bar2"></span>
-        <span class="navbar-toggler-bar bar3"></span>
-      </span>
-    </button>
-
-<div class="d-lg-none">
-  <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1">
-    Landing Pages
-  </h6>
-
-  <a href="./pages/about-us.html" class="dropdown-item border-radius-md">
-    <span>About Us</span>
-  </a>
-  <a href="./pages/contact-us.html" class="dropdown-item border-radius-md">
-    <span>Contact Us</span>
-  </a>
-  <a href="./pages/author.html" class="dropdown-item border-radius-md">
-    <span>Author</span>
-  </a>
-
-  <h6 class="dropdown-header text-dark font-weight-bolder d-flex align-items-center px-1 mt-3">
-    Account
-  </h6>
-  <a href="./pages/sign-in.html" class="dropdown-item border-radius-md">
-    <span>Sign In</span>
-  </a>
-
-</div>
-
-          </div>
+    <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0 ms-lg-12 ps-lg-5" id="navigation">
+      <ul class="navbar-nav navbar-nav-hover ms-auto">
+        <li class="nav-item my-auto ms-3 ms-lg-0">
+          <a href="/" class="btn btn-sm  bg-gradient-primary  mb-0 me-1 mt-2 mt-md-0">Home</a>
         </li>
-
-        
-          <ul class="dropdown-menu dropdown-menu-end dropdown-menu-animation dropdown-md dropdown-md-responsive p-3 border-radius-lg mt-0 mt-lg-3" aria-labelledby="dropdownMenuBlocks">
-
-  <li class="nav-item dropdown dropdown-hover dropdown-subitem">
-    <a class="dropdown-item py-2 ps-3 border-radius-md" href="./presentation.html">
-      <div class="w-100 d-flex align-items-center justify-content-between">
-        <div>
-          <h6 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">Elements</h6>
-          <span class="text-sm">See all elements</span>
-        </div>
-
-        <img src="{% static 'chatbot/images/down-arrow.svg' %}" alt="down-arrow" class="arrow">
-      </div>
-    </a>
-    <div class="dropdown-menu mt-0 py-3 px-2 mt-3">
-      <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/elements/avatars.html">
-        Avatars
-      </a>
-      <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/elements/badges.html">
-        Badges
-      </a>
-      <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/elements/breadcrumbs.html">
-        Breadcrumbs
-      </a>
-      <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/elements/buttons.html">
-        Buttons
-      </a>
-      <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/elements/dropdowns.html">
-        Dropdowns
-      </a>
-      <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/elements/progress-bars.html">
-        Progress Bars
-      </a>
-      <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/elements/toggles.html">
-        Toggles
-      </a>
-      <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/elements/typography.html">
-        Typography
-      </a>
-    </div>
-  </li>
-</div>
-
-<div class="row d-lg-none">
-  <div class="col-md-12">
-    <div class="d-flex mb-2">
-      <div class="icon h-10 me-3 d-flex mt-1">
-        <i class="ni ni-single-copy-04 text-gradient text-primary"></i>
-      </div>
-      <div class="w-100 d-flex align-items-center justify-content-between">
-        <div>
-          <h6 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">Page Sections</h6>
-        </div>
-      </div>
-    </div>
-    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/page-sections/hero-sections.html">
-      Page Headers
-    </a>
-    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/page-sections/features.html">
-      Features
-    </a>
-
-    <div class="d-flex mb-2 mt-3">
-      <div class="icon h-10 me-3 d-flex mt-1">
-        <i class="ni ni-laptop text-gradient text-primary"></i>
-      </div>
-      <div class="w-100 d-flex align-items-center justify-content-between">
-        <div>
-          <h6 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">Navigation</h6>
-        </div>
-      </div>
-    </div>
-    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/navigation/navbars.html">
-      Navbars
-    </a>
-    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/navigation/nav-tabs.html">
-      Nav Tabs
-    </a>
-    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/navigation/pagination.html">
-      Pagination
-    </a>
-
-    <div class="d-flex mb-2 mt-3">
-      <div class="icon h-10 me-3 d-flex mt-1">
-        <i class="ni ni-badge text-gradient text-primary"></i>
-      </div>
-      <div class="w-100 d-flex align-items-center justify-content-between">
-        <div>
-          <h6 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">Input Areas</h6>
-        </div>
-      </div>
-    </div>
-    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/input-areas/inputs.html">
-      Inputs
-    </a>
-    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/input-areas/forms.html">
-      Forms
-    </a>
-
-
-    <div class="d-flex mb-2 mt-3">
-      <div class="icon h-10 me-3 d-flex mt-1">
-        <i class="ni ni-notification-70 text-gradient text-primary"></i>
-      </div>
-      <div class="w-100 d-flex align-items-center justify-content-between">
-        <div>
-          <h6 class="dropdown-header text-dark font-weight-bolder d-flex justify-content-cente align-items-center p-0">Attention Catchers</h6>
-        </div>
-      </div>
-    </div>
-    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/attention-catchers/alerts.html">
-      Alerts
-    </a>
-    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/attention-catchers/modals.html">
-      Modals
-    </a>
-    <a class="dropdown-item ps-3 border-radius-md mb-1" href="./sections/attention-catchers/tooltips-popovers.html">
-      Tooltips & Popovers
-    </a>
-       
-</div>
-        
-        <li class="nav-item ms-lg-auto">
-          <a class="nav-link nav-link-icon me-2" href="https://github.com/creativetimofficial/material-kit" target="_blank">
-            <i class="fa fa-github me-1"></i>
-            <p class="d-inline text-sm z-index-1 font-weight-bold" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Star us on Github">Github</p>
-          </a>
+        {% if not user.is_authenticated %}
+        <li class="nav-item my-auto ms-3 ms-lg-0">
+          <a href="/register" class="btn btn-sm  bg-gradient-primary  mb-0 me-1 mt-2 mt-md-0">Register</a>
         </li>
         <li class="nav-item my-auto ms-3 ms-lg-0">
-          
-          <a href="https://www.creative-tim.com/product/material-kit-pro" class="btn btn-sm  bg-gradient-primary  mb-0 me-1 mt-2 mt-md-0">Upgrade to Pro</a>
-        
+          <a href="/login" class="btn btn-sm  bg-gradient-primary  mb-0 me-1 mt-2 mt-md-0">Login</a>
         </li>
+        {% endif %}
+        {% if user.is_authenticated %}
+        <li class="nav-item my-auto ms-3 ms-lg-0">
+          <a href="{% url 'logout' %}" class="btn btn-sm  bg-gradient-primary  mb-0 me-1 mt-2 mt-md-0">Logout</a>
+        </li>
+        {% endif %}
       </ul>
+      
     </div>
-  </div>
+    
+
 </nav>
 <!-- End Navbar -->
 </div></div></div>
@@ -404,6 +140,8 @@
       </div>
     </div>
   </div>
+    {% if user.is_authenticated %}
+    
     <div class="card d-flex blur justify-content-center shadow-lg my-sm-0 my-sm-6 mt-8 mb-5">
       <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
         <div class="bg-gradient-primary shadow-primary border-radius-lg p-3">
@@ -431,7 +169,12 @@
             </div>
             
           </div>
-          poner links a archivos
+          
+          {% for nombre_archivo, identificador in data %}
+            <div class="box_gg">
+              <a href="/{{ user.username }}/{{ identificador }}/">{{ nombre_archivo }}</a>
+            </div>
+          {% endfor %}
           <div id="loading-overlay" class="loading-overlay">
             <div class="loading-spinner"></div>
           </div>
@@ -439,6 +182,18 @@
         </div>
       </div>
     </div>
+
+    <form method="POST" action="{% url 'api_reader_pdf:talk_pdf' %}">
+      {% csrf_token %}
+      
+      <input type="text" name="identificador" placeholder="Identificador" required>
+      <br>
+      <input type="text" name="question" placeholder="Pregunta" required>
+      <br>
+      <button type="submit">Enviar</button>
+    </form>
+    
+    {% endif %}
 
 <!-- -------- END Content Presentation Docs ------- -->
 
