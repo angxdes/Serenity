@@ -20,6 +20,8 @@ def chatbot(request):
         context = {'nombre_archivos': nombre_archivos, 'identificadores': identificadores, 'data': combined_data}
         return render(request, 'chatbot/index.html', context)
     else:
+        
+
         return render(request, 'chatbot/index.html')
 
 def logout_view(request):

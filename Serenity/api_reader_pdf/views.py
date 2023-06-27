@@ -43,7 +43,8 @@ def create_embeddings_url(request):
 def talk_pdf(request):
     identificador = request.POST.get('identificador')
     question = request.POST.get('question')
-    answer = answer_question(identificador, question)
+    model="text-davinci-003"
+    answer = answer_question(identificador,model, question)
 
     return JsonResponse({'answer': answer}) 
 
