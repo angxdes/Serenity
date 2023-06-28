@@ -55,8 +55,8 @@
   <style>
     /* Estilos para el chat */
     body {
-        background-color: #f7f7f7;
-        font-family: Arial, sans-serif;
+      background-color: #f7f7f7;
+      font-family: Arial, sans-serif;
     }
 
     h1 {
@@ -65,72 +65,72 @@
     }
 
     .chat-container {
-        width: 400px;
-        height: 300px;
-        margin: 0 auto;
-        border: 1px solid #ccc;
-        border-radius: 10px;
-        overflow-y: scroll;
-        padding: 10px;
-        background-color: #ffffff;
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-end;
+      width: 400px;
+      height: 300px;
+      margin: 0 auto;
+      border: 1px solid #ccc;
+      border-radius: 10px;
+      overflow-y: scroll;
+      padding: 10px;
+      background-color: #ffffff;
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
     }
 
     .user-message {
-        align-self: flex-start;
-        background-color: #fd5c70;
-        color: #ffffff;
-        padding: 8px;
-        margin-bottom: 10px;
-        border-radius: 10px;
+      align-self: flex-start;
+      background-color: #fd5c70;
+      color: #ffffff;
+      padding: 8px;
+      margin-bottom: 10px;
+      border-radius: 10px;
     }
 
     .bot-message {
-        align-self: flex-end;
-        background-color: #f0f0f0;
-        padding: 8px;
-        margin-bottom: 10px;
-        border-radius: 10px;
-        position: relative;
+      align-self: flex-end;
+      background-color: #f0f0f0;
+      padding: 8px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+      position: relative;
     }
 
     .typing-indicator {
-        position: absolute;
-        bottom: -20px;
-        right: 10px;
-        width: 20px;
-        height: 6px;
-        background-color: #ccc;
-        border-radius: 3px;
-        animation: typing 1s infinite;
+      position: absolute;
+      bottom: -20px;
+      right: 10px;
+      width: 20px;
+      height: 6px;
+      background-color: #ccc;
+      border-radius: 3px;
+      animation: typing 1s infinite;
     }
 
     @keyframes typing {
-        0% { opacity: 0.4; }
-        50% { opacity: 1; }
-        100% { opacity: 0.4; }
+      0% { opacity: 0.4; }
+      50% { opacity: 1; }
+      100% { opacity: 0.4; }
     }
 
     .chat-input-container {
-        display: flex;
-        justify-content: flex-start;
-        align-items: center;
-        margin-top: 10px;
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      margin-top: 10px;
     }
 
     .chat-input {
-        display: flex;
-        flex-grow: 1;
-        margin-right: 10px;
+      display: flex;
+      flex-grow: 1;
+      margin-right: 10px;
     }
 
     .chat-input input[type="text"] {
-        flex: 1;
-        padding: 6px;
-        border: none;
-        border-radius: 5px;
+      flex: 1;
+      padding: 6px;
+      border: none;
+      border-radius: 5px;
     }
 
     .chat-input button {
@@ -340,8 +340,10 @@
 
 <body class="index-page bg-gray-200">
   <!-- Navbar -->
-<div class="container position-sticky z-index-sticky top-0"><div class="row"><div class="col-12">
-  <nav class="navbar navbar-expand-lg  blur border-radius-xl top-0 z-index-fixed shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
+<div class="container position-sticky z-index-sticky top-0">
+  <div class="row">
+    <div class="col-12">
+    <nav class="navbar navbar-expand-lg  blur border-radius-xl top-0 z-index-fixed shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
     <div class="container-fluid px-0">
       <a class="navbar-brand font-weight-bolder ms-sm-3" rel="tooltip" data-placement="bottom" target="_blank">
         Serenity
@@ -371,82 +373,88 @@
         
       </div>
   </nav>
-<!-- End Navbar -->
-  <div class="container">
-    <div class="links-column">
-      <h2>Enlaces</h2>
-      <button id="open-popup-btn"><i class="fas fa-plus"></i> Agregar Enlace</button>
-      <div id="popup" class="popup">
-        <div class="popup-content">
-          <span class="close">&times;</span>
-          <form id="link-form">
-            <input type="text" id="link-input" placeholder="Ingrese el enlace...">
-            <button type="submit" id="add-link-btn">Agregar</button>
-          </form>
-        </div>
-      </div>
-      {% for nombre_archivo, identificador in data %}
-        <div class="link-box">
-          <a href="/{{ user_username }}/{{ identificador }}/"><i class="fas fa-link"></i>{{ nombre_archivo }}</a>
-        </div>
-      {% endfor %}
-    </div>
-    <div class="chatbot-column">
-      <form id="chat-form" method="post" autocomplete="off" action="{% url 'api_reader_pdf:talk_pdf' %}">
-        {% csrf_token %}
-        <div id="chatbox"></div>
-        <div class="input-container">
-          <input type="text" id="user-input" placeholder="Escribe un mensaje...">
-          <button type="submit" id="send-btn"><i class="fas fa-paper-plane"></i></button>
-        </div>
-      </form>
   </div>
-  <script>
-    $(document).ready(function() {
-      // Función para enviar la pregunta y obtener una respuesta
-      function enviarPregunta(identificador, pregunta) {
-        $.ajax({
-          type: "POST",
-          url: "{% url 'api_reader_pdf:talk_pdf' %}",
-          data: {
-            csrfmiddlewaretoken: "{{ csrf_token }}",
-            identificador: identificador,
-            question: pregunta
-          },
-          success: function(response) {
-            // Actualizar el chat con la respuesta recibida
-            var respuesta = response.answer;
-            var mensaje = '<div class="mensaje respuesta">' + respuesta + '</div>';
-            $("#chatbox").append(mensaje);
-            // Desplazarse al último mensaje en el chat
-            $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
-          },
-          error: function(xhr, errmsg, err) {
-            // Manejar errores en caso de que la solicitud falle
-            console.log(xhr.status + ": " + xhr.responseText);
-          }
-        });
-      }
-  
-      // Manejar el envío del formulario de chat
-      $("#chat-form").submit(function(event) {
-        event.preventDefault();
-        var pregunta = $("#user-input").val();
-        if (pregunta.trim() !== "") {
-          // Agregar la pregunta al chat
-          var mensaje = '<div class="mensaje pregunta">' + pregunta + '</div>';
+  </div>
+</div>
+<!-- End Navbar -->
+<div class="container">
+  <div class="links-column">
+    <h2>Enlaces</h2>
+    <button id="open-popup-btn"><i class="fas fa-plus"></i> Agregar Enlace</button>
+    <div id="popup" class="popup">
+      <div class="popup-content">
+        <span class="close">&times;</span>
+        <form id="link-form">
+          <input type="text" id="link-input" placeholder="Ingrese el enlace...">
+          <button type="submit" id="add-link-btn">Agregar</button>
+        </form>
+      </div>
+    </div>
+    {% for nombre_archivo, identificador in data %}
+      <div class="link-box">
+        <a href="/{{ user_username }}/{{ identificador }}/"><i class="fas fa-link"></i>{{ nombre_archivo }}</a>
+      </div>
+    {% endfor %}
+  </div>
+
+  <div class="chatbot-column">
+    <form id="chat-form" method="post" autocomplete="off" action="{% url 'api_reader_pdf:talk_pdf' %}">
+      {% csrf_token %}
+      <div id="chatbox"></div>
+      <div class="input-container">
+        <input type="text" id="user-input" placeholder="Escribe un mensaje...">
+        <button type="submit" id="send-btn"><i class="fas fa-paper-plane"></i></button>
+      </div>
+      </div>
+    </form>
+</div>
+
+<script>
+  $(document).ready(function() {
+    // Función para enviar la pregunta y obtener una respuesta
+    function enviarPregunta(identificador, pregunta) {
+      $.ajax({
+        type: "POST",
+        url: "{% url 'api_reader_pdf:talk_pdf' %}",
+        data: {
+          csrfmiddlewaretoken: "{{ csrf_token }}",
+          identificador: identificador,
+          question: pregunta
+        },
+        success: function(response) {
+          // Actualizar el chat con la respuesta recibida
+          var respuesta = response.answer;
+          var mensaje = '<div class="mensaje respuesta">' + respuesta + '</div>';
           $("#chatbox").append(mensaje);
           // Desplazarse al último mensaje en el chat
           $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
-          // Enviar la pregunta al servidor
-          var identificador = "{{ identificador }}";
-          enviarPregunta(identificador, pregunta);
-          // Borrar el texto del input de usuario
-          $("#user-input").val("");
+        },
+        error: function(xhr, errmsg, err) {
+          // Manejar errores en caso de que la solicitud falle
+          console.log(xhr.status + ": " + xhr.responseText);
         }
       });
+    }
+
+    // Manejar el envío del formulario de chat
+    $("#chat-form").submit(function(event) {
+      event.preventDefault();
+      var pregunta = $("#user-input").val();
+      if (pregunta.trim() !== "") {
+        // Agregar la pregunta al chat
+        var mensaje = '<div class="mensaje pregunta">' + pregunta + '</div>';
+        $("#chatbox").append(mensaje);
+        // Desplazarse al último mensaje en el chat
+        $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
+        // Enviar la pregunta al servidor
+        var identificador = "{{ identificador }}";
+        enviarPregunta(identificador, pregunta);
+        // Borrar el texto del input de usuario
+        $("#user-input").val("");
+      }
     });
-  </script>
+  });
+</script>
 
 
 

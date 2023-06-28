@@ -5,6 +5,8 @@ from PyPDF2 import PdfReader
 from .models import Embedding
 from chatbot.models import Usuario
 from sklearn.metrics.pairwise import cosine_similarity
+from sklearn.metrics.pairwise import cosine_distances
+
 
 
 
@@ -40,7 +42,7 @@ def pdf_to_text(url):
 
         text = ''
         for page in range(len(pdf_reader.pages)):
-            text += pdf_reader.pages[page].extract_text()
+            text += pdf_reader.pages[page].extract_text().encode('utf-8', 'ignore').decode('utf-8')
 
         return title, text
 
@@ -143,7 +145,16 @@ def pdf_dfs(user_id, text, nombre_archivo):
     embedding = Embedding(usuario=user, contenido_texto=contenido_texto, embeddings=embeddings, nombre_archivo=nombre_archivo, identificador=identificador)
     embedding.save()
 
-def create_context(question, identificador, max_len=1000, size="ada"):
+def encontrar_vector_mas_similar(lista_vectores, vector_objetivo):
+    lista_vectores = np.array(lista_vectores)
+    vector_objetivo = np.array(vector_objetivo)
+
+    similitudes = cosine_similarity(lista_vectores, [vector_objetivo])
+    indice_mejor_similitud = np.argmax(similitudes)
+
+    return indice_mejor_similitud
+
+def create_context(question, identificador):
     """
     Create a context for a question by finding the most similar context from the database
     """
@@ -154,46 +165,24 @@ def create_context(question, identificador, max_len=1000, size="ada"):
     # Get the embeddings and chunks from the database
     embeddings_chunks = list(Embedding.objects.filter(identificador=identificador).values('embeddings', 'contenido_texto'))
 
-    cur_len = 0
-    max_similarity = float('-inf')
-    best_chunk_index = -1
+    list_vectors = embeddings_chunks[0]['embeddings']
 
-    # Find the most similar chunk to the question
-    for index, chunk in enumerate(embeddings_chunks):
-        chunk_embedding = chunk['embeddings']
-        chunk_text = chunk['contenido_texto']
+    list_text_chunks = embeddings_chunks[0]['contenido_texto']
 
-        # Calculate cosine similarity between chunk embedding and question embedding
-        similarity = cosine_similarity(np.array(chunk_embedding), np.array(q_embedding).reshape(1, -1))[0][0]
+    best_embedding_index = encontrar_vector_mas_similar(list_vectors, q_embedding)
 
-        if similarity > max_similarity:
-            max_similarity = similarity
-            best_chunk_index = index
-
-        n_tokens = sum(len(text.split()) for text in ' '.join(map(str, chunk_text)))
+    best_text_chunk = list_text_chunks[best_embedding_index]
 
 
-        # Add the length of the text to the current length
-        cur_len += n_tokens + 4
+    # Return the best text chunk
 
-        # If the context is too long, break
-        if cur_len > max_len:
-            break
+    return ' '.join(best_text_chunk)
 
-    # Return the index of the best chunk
-    return best_chunk_index
-
-def answer_question(identificador, model="text-davinci-003", question='', max_len=1800, size="ada", debug=False, max_tokens=1000, stop_sequence=None):
+def answer_question(identificador, question='', model="text-davinci-003", debug=False, max_tokens=1000, stop_sequence=None):
     """
     Answer a question based on the most similar context from the database texts
     """
-    context_index = create_context(question, identificador, max_len, size=size)
-
-    if context_index == -1:
-        return "No lo sé"
-
-    embeddings_chunks = list(Embedding.objects.filter(identificador=identificador).values_list('contenido_texto', flat=True))
-    context = "\n\n".join(embeddings_chunks[0][context_index][0])
+    context = create_context(question, identificador)
 
     # If debug, print the raw model response
     if debug:
@@ -204,7 +193,7 @@ def answer_question(identificador, model="text-davinci-003", question='', max_le
         # Create a completions using the question and context
         response = openai.Completion.create(
             prompt = f"Soy un chatbot que puede leer y responder preguntas basadas en el contexto de un PDF. Si no puedo responder tu pregunta, diré 'No lo sé'. Si deseas saber mi opinión, pregunta '¿Qué piensas tú?', '¿Cuál es tu punto de vista?' o algo similar. También puedes preguntarme cómo estoy o cualquier otra pregunta abierta. ¡Estoy aquí para ayudarte! \n\nContexto: {context}\n\nPregunta: {question}\n\nRespuesta: ",
-            temperature=0.1,
+            temperature=0.4,
             max_tokens=max_tokens,
             top_p=1,
             frequency_penalty=0,
