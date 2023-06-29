@@ -75,9 +75,12 @@ def register_view(request):
         last_name = request.POST['last_name']
         password = request.POST['password1']
         if Usuario.objects.filter(username=username).exists():
-            messages.error(request, 'The Username alredy exists')
+            messages.error(request, 'The username already exists')
+            return render(request, 'chatbot/register.html')
+    
         if Usuario.objects.filter(email=email).exists():
-            messages.error(request, 'The email alredy exists')
+            messages.error(request, 'The email already exists')
+            return render(request, 'chatbot/register.html')
         # Realizar las acciones necesarias para registrar al usuario
         # Crea una instancia de Usuarios y guarda los datos
         user = Usuario(username=username, first_name=first_name, last_name=last_name, email=email)
