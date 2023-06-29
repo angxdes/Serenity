@@ -193,7 +193,7 @@ def answer_question(identificador, question='', model="text-davinci-003", debug=
         # Create a completions using the question and context
         response = openai.Completion.create(
             prompt = f"Soy un chatbot que puede leer y responder preguntas basadas en el contexto de un PDF. Si no puedo responder tu pregunta, diré 'No lo sé'. Si deseas saber mi opinión, pregunta '¿Qué piensas tú?', '¿Cuál es tu punto de vista?' o algo similar. También puedes preguntarme cómo estoy o cualquier otra pregunta abierta. ¡Estoy aquí para ayudarte! \n\nContexto: {context}\n\nPregunta: {question}\n\nRespuesta: ",
-            temperature=0.4,
+            temperature=0.5,
             max_tokens=max_tokens,
             top_p=1,
             frequency_penalty=0,
