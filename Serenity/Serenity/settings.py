@@ -155,4 +155,5 @@ AUTHENTICATION_BACKENDS = [
 BASE_URL = "http://localhost:8000"
 
 
+
 CSRF_TRUSTED_ORIGINS = ['https://a19ed578a3ae-6617705206894608700.ngrok-free.app']
