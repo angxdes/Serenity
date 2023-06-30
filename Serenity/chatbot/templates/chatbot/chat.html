@@ -80,21 +80,25 @@
 
     .user-message {
       align-self: flex-start;
-      background-color: #fd5c70;
+      background-color: #4a90e2;
       color: #ffffff;
-      padding: 8px;
-      margin-bottom: 10px;
-      border-radius: 10px;
-    }
-
-    .bot-message {
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 20px;
+      width: 100%;
+      direction: rtl;
+      }
+      
+      .bot-message {
       align-self: flex-end;
-      background-color: #f0f0f0;
-      padding: 8px;
-      margin-bottom: 10px;
-      border-radius: 10px;
+      background-color: #e5e5e5;
+      color: #333333;
+      padding: 10px;
+      margin-bottom: 15px;
+      border-radius: 20px;
       position: relative;
-    }
+      width: 100%;
+      }
 
     .typing-indicator {
       position: absolute;
@@ -222,7 +226,7 @@
     }
 
     .chatbot-column #chatbox {
-      height: 200px;
+      height: 500px;
       overflow-y: auto;
       padding: 10px;
       border: 1px solid #ccc;
@@ -379,14 +383,15 @@
 <!-- End Navbar -->
 <div class="container">
   <div class="links-column">
-    <h2>Enlaces</h2>
-    <button id="open-popup-btn"><i class="fas fa-plus"></i> Agregar Enlace</button>
+    <h2>Archivos</h2>
+    <button id="open-popup-btn"><i class="fas fa-plus"></i> Agregar Archivos</button>
     <div id="popup" class="popup">
       <div class="popup-content">
         <span class="close">&times;</span>
-        <form id="link-form">
-          <input type="text" id="link-input" placeholder="Ingrese el enlace...">
-          <button type="submit" id="add-link-btn">Agregar</button>
+        <form id="link-form" method="post" autocomplete="off" action="api_reader_pdf/create_embeddings_url">
+          {% csrf_token %}
+          <input type="text" placeholder="URL" id="url" name="url" required>
+          <button class="btn bg-gradient-primary mt-3 mb-0" id="submit-button">Send Message</button>
         </form>
       </div>
     </div>
@@ -424,7 +429,7 @@
         success: function(response) {
           // Actualizar el chat con la respuesta recibida
           var respuesta = response.answer;
-          var mensaje = '<div class="mensaje respuesta">' + respuesta + '</div>';
+          var mensaje = '<div class="bot-message">' + respuesta + '</div>';
           $("#chatbox").append(mensaje);
           // Desplazarse al último mensaje en el chat
           $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
@@ -442,7 +447,7 @@
       var pregunta = $("#user-input").val();
       if (pregunta.trim() !== "") {
         // Agregar la pregunta al chat
-        var mensaje = '<div class="mensaje pregunta">' + pregunta + '</div>';
+        var mensaje = '<div class="user-message">' + pregunta + '</div>';
         $("#chatbox").append(mensaje);
         // Desplazarse al último mensaje en el chat
         $("#chatbox").scrollTop($("#chatbox")[0].scrollHeight);
