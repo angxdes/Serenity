@@ -51,280 +51,188 @@
     .box_gg a:hover {
       text-decoration: underline;
     }
+    #main-container {
+    padding-top: 10%;
+  }
+    
   </style>
+
 </head>
 
 
 <body class="index-page bg-gray-200">
   <!-- Navbar -->
-<div class="container position-sticky z-index-sticky top-0"><div class="row"><div class="col-12">
-<nav class="navbar navbar-expand-lg  blur border-radius-xl top-0 z-index-fixed shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
-  <div class="container-fluid px-0">
-    <a class="navbar-brand font-weight-bolder ms-sm-3" rel="tooltip" data-placement="bottom" target="_blank">
-      Serenity
-    </a>
-    {% if user.is_authenticated %}
-      <p class="nombre_usuario">Bienvenido, {{ user.username }}</p>
-    {% endif %}
-    <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0 ms-lg-12 ps-lg-5" id="navigation">
-      <ul class="navbar-nav navbar-nav-hover ms-auto">
-        <li class="nav-item my-auto ms-3 ms-lg-0">
-          <a href="/" class="btn btn-sm  bg-gradient-primary  mb-0 me-1 mt-2 mt-md-0">Home</a>
-        </li>
-        {% if not user.is_authenticated %}
-        <li class="nav-item my-auto ms-3 ms-lg-0">
-          <a href="/register" class="btn btn-sm  bg-gradient-primary  mb-0 me-1 mt-2 mt-md-0">Register</a>
-        </li>
-        <li class="nav-item my-auto ms-3 ms-lg-0">
-          <a href="/login" class="btn btn-sm  bg-gradient-primary  mb-0 me-1 mt-2 mt-md-0">Login</a>
-        </li>
-        {% endif %}
-        {% if user.is_authenticated %}
-        <li class="nav-item my-auto ms-3 ms-lg-0">
-          <a href="{% url 'logout' %}" class="btn btn-sm  bg-gradient-primary  mb-0 me-1 mt-2 mt-md-0">Logout</a>
-        </li>
-        {% endif %}
-      </ul>
-      
-    </div>
-    
-
-</nav>
-<!-- End Navbar -->
-</div></div></div>
-
-  
-
-  
-
-    
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-<header class="header-2">
-  <div class="page-header min-vh-75 relative" style="background-image: url(../../static/chatbot/images/bg2.jpg);">
-    <span class="mask bg-gradient-primary opacity-4"></span>
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-7 text-center mx-auto">
-          <h1 class="text-white pt-3 mt-n5">Serenity</h1>
-          <p class="lead text-white mt-3">Research & Development <br/> an Intelligent System </p>
-          <h1 class="text-white pt-3 mt-n5">Research and Development</h1>
-          <p class="lead text-white mt-3">KMS <br/>and Artificial Intelligence </p>
-        </div>
-      </div>
-    </div>
-  </div>
-</header>
-
-<div class="card card-body blur shadow-blur mx-3 mx-md-4 mt-n6">
-  <div class="container">
+  <div class="container position-sticky z-index-sticky top-0">
     <div class="row">
-      <div class="row text-center my-sm-5 mt-5">
-        <div class="col-lg-6 mx-auto">
-          <span class="badge bg-primary mb-3">Boost creativity</span>
-          <h2 class="">With Knowledge and Consultancy</h2>
-          <p class="lead">The easiest way to get started is to use one of our <br /> pre-built assistants or trainers </p>
-        </div>
+      <div class="col-12">
+        <nav class="navbar navbar-expand-lg blur border-radius-xl top-0 z-index-fixed shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
+          <!-- Contenido de la barra de navegación -->
+          <a class="navbar-brand font-weight-bolder ms-sm-3" rel="tooltip" data-placement="bottom" target="_blank">
+            Serenity
+          </a>
+          {% if user.is_authenticated %}
+            <p class="nombre_usuario">Bienvenido, {{ user.username }}</p>
+          {% endif %}
+          <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0 ms-lg-12 ps-lg-5" id="navigation">
+            <ul class="navbar-nav navbar-nav-hover ms-auto">
+              <li class="nav-item my-auto ms-3 ms-lg-0">
+                <a href="/" class="btn btn-sm  bg-gradient-primary  mb-0 me-1 mt-2 mt-md-0">Home</a>
+              </li>
+              {% if not user.is_authenticated %}
+              <li class="nav-item my-auto ms-3 ms-lg-0">
+                <a href="/register" class="btn btn-sm  bg-gradient-primary  mb-0 me-1 mt-2 mt-md-0">Register</a>
+              </li>
+              <li class="nav-item my-auto ms-3 ms-lg-0">
+                <a href="/login" class="btn btn-sm  bg-gradient-primary  mb-0 me-1 mt-2 mt-md-0">Login</a>
+              </li>
+              {% endif %}
+              {% if user.is_authenticated %}
+              <li class="nav-item my-auto ms-3 ms-lg-0">
+                <a href="{% url 'logout' %}" class="btn btn-sm  bg-gradient-primary  mb-0 me-1 mt-2 mt-md-0">Logout</a>
+              </li>
+              {% endif %}
+            </ul>
+          </div>
+        </nav>
       </div>
     </div>
   </div>
-      
-    {% if user.is_authenticated %}
-    
-    <div class="card d-flex blur justify-content-center shadow-lg my-sm-0 my-sm-6 mt-8 mb-5">
-      <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
-        <div class="bg-gradient-primary shadow-primary border-radius-lg p-3">
-          <h3 class="text-white text-primary mb-0">Chat with your PDF now</h3>
-        </div>
+  
+  <div class="container" id="main-container">
+    <div class="row">
+      <div class="col-lg-6 mx-auto text-center">
+        
+        <h2 class="">Transforma la manera de como trabajas o estudias usando I.A conversacional </h2>
+        <p class="lead">Herramienta perfecta para estudiantes, profesionales<br /> cualquiera que tenga que lidiar con síntesis de conocimiento</p>
+        {% if not user.is_authenticated %}
+        <a href="/login" class="btn btn-sm  bg-gradient-primary  mb-0 me-1 mt-2 mt-md-0">Pruébalo</a>
+        {% endif %}
       </div>
-      <div class="card-body">
-        <p class="pb-3">
-          Paste or type the URL of a PDF, doesn't matter if it is in google drive or not.
-        </p>
-        <form id="url_form" method="post" autocomplete="off" action="api_reader_pdf/create_embeddings_url" enctype="multipart/form-data">
-          {% csrf_token %}
-          <div class="card-body p-0 my-3">
-            <div class="row">
-              <div class="input-group input-group-static mb-4">
-                <input type="text" class="form-control" placeholder="URL" id="url" name="url" >
+    </div>
+  </div>
+  
+  {% if user.is_authenticated %}
+  <div class="container" id="main-container">
+    <div class="row justify-content-center">
+      <div class="card blur shadow-lg my-sm-0 my-sm-6 mt-8 mb-5">
+        <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2 bg-transparent">
+          <div class="bg-gradient-primary shadow-primary border-radius-lg p-3">
+            <h3 class="text-white text-primary mb-0">Pregúntale a un PDF </h3>
+          </div>
+        </div>
+        <div class="card-body">
+          <p class="pb-3">
+            Pegue o escriba la URL de un PDF, no importa si está en Google Drive o no.
+          </p>
+          <form id="url_form" method="post" autocomplete="off" action="api_reader_pdf/create_embeddings_url">
+            {% csrf_token %}
+            <div class="card-body p-0 my-3">
+              <div class="row">
+                <div class="input-group input-group-static mb-4">
+                  <input type="text" class="form-control" placeholder="URL" id="url" name="url" required>
+                </div>
               </div>
             </div>
-          </div>
-          <p>Or upload a PDF file:</p>
-          <input type="file"  id="archivo" name="archivo" >
-          <div class="row">
-            <div class="col-md-12 text-center">
-              <button class="btn bg-gradient-primary mt-3 mb-0" id="submit-button">Send Message</button>
+            
+            <div class="row">
+              <div class="col-md-12 text-center">
+                <button class="btn bg-gradient-primary mt-3 mb-0" id="submit-button">Platicar</button>
+              </div>
             </div>
             
-          </div>
-          <div id="loading-overlay" class="loading-overlay">
-            <div class="loading-spinner"></div>
-          </div>
-        </form>
-        
-        </div>
-        
-      </div>
-      {% for nombre_archivo, identificador in data %}
-            <div class="box_gg">
-              <a href="/{{ user.username }}/{{ identificador }}/">{{ nombre_archivo }}</a>
+            {% for nombre_archivo, identificador in data %}
+              <div class="box_gg">
+                <a href="/{{ user.username }}/{{ identificador }}/">{{ nombre_archivo }}</a>
+              </div>
+            {% endfor %}
+            <div id="loading-overlay" class="loading-overlay">
+              <div class="loading-spinner"></div>
             </div>
-          {% endfor %}
+          </form>
+        </div>
+      </div>
     </div>
-    
-    {% endif %}
+  </div>
+  {% endif %}
+  
+
 
 <!-- -------- END Content Presentation Docs ------- -->
 
 
-<section class="py-7">
-  <div class="container">
-    <div class="row">
-      <div class="col-lg-6 mx-auto text-center">
-        <h2 class="mb-0">Trusted by over</h2>
-        <h2 class="text-gradient text-primary mb-3">1,679,477+ web developers</h2>
-        <p class="lead">Many Fortune 500 companies, startups, universities and governmental institutions love Creative Tim's products. </p>
-      </div>
-    </div>
-    <div class="row mt-6">
-      <div class="col-lg-4 col-md-8">
-        <div class="card card-plain">
-          <div class="card-body">
-            <div class="author">
-              <div class="name">
-                <h6 class="mb-0 font-weight-bolder">Nick Willever</h6>
-                <div class="stats">
-                  <i class="far fa-clock"></i> 1 day ago
-                </div>
-              </div>
-            </div>
-            <p class="mt-4">"This is an excellent product, the documentation is excellent and helped me get things done more efficiently."</p>
-            <div class="rating mt-3">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-4 col-md-8 ms-md-auto">
-        <div class="card bg-gradient-primary">
-          <div class="card-body">
-            <div class="author align-items-center">
-              <div class="name">
-                <h6 class="text-white mb-0 font-weight-bolder">Shailesh Kushwaha</h6>
-                <div class="stats text-white">
-                  <i class="far fa-clock"></i> 1 week ago
-                </div>
-              </div>
-            </div>
-            <p class="mt-4 text-white">"I found solution to all my design needs from Creative Tim. I use them as a freelancer in my hobby projects for fun! And its really affordable, very humble guys !!!"</p>
-            <div class="rating mt-3">
-              <i class="fas fa-star text-white"></i>
-              <i class="fas fa-star text-white"></i>
-              <i class="fas fa-star text-white"></i>
-              <i class="fas fa-star text-white"></i>
-              <i class="fas fa-star text-white"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div class="col-lg-4 col-md-8">
-        <div class="card card-plain">
-          <div class="card-body">
-            <div class="author">
-              <div class="name">
-                <h6 class="mb-0 font-weight-bolder">Samuel Kamuli</h6>
-                <div class="stats">
-                  <i class="far fa-clock"></i> 3 weeks ago
-                </div>
-              </div>
-            </div>
-            <p class="mt-4">"Great product. Helped me cut the time to set up a site. I used the components within instead of starting from scratch. I highly recommend for developers who want to spend more time on the backend!."</p>
-            <div class="rating mt-3">
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-              <i class="fas fa-star"></i>
-            </div>
-          </div>
-        </div>
-      </div>
-
-    </div>
-    <hr class="horizontal dark my-5">
-    <div class="row">
-      <div class="col-lg-2 col-md-4 col-6 ms-auto">
-        <img class="w-100 opacity-6" src="{% static 'chatbot/images/logos/gray-logos/logo-apple.svg' %}" alt="Logo">
-      </div>
-      <div class="col-lg-2 col-md-4 col-6">
-        <img class="w-100 opacity-6" src="{% static 'chatbot/images/logos/gray-logos/logo-facebook.svg' %}" alt="Logo">
-      </div>
-      <div class="col-lg-2 col-md-4 col-6">
-        <img class="w-100 opacity-6" src="{% static 'chatbot/images/logos/gray-logos/logo-nasa.svg' %}" alt="Logo">
-      </div>
-      <div class="col-lg-2 col-md-4 col-6 ms-lg-0 ms-md-auto">
-        <img class="w-100 opacity-6" src="{% static 'chatbot/images/logos/gray-logos/logo-vodafone.svg' %}" alt="Logo">
-      </div>
-      <div class="col-lg-2 col-md-4 col-6 me-md-auto mx-md-0 mx-auto">
-        <img class="w-100 opacity-6" src="{% static 'chatbot/images/logos/gray-logos/logo-digitalocean.svg' %}" alt="Logo">
-      </div>      
-    </div>
-  </div>
-</section>
 <section class="py-sm-7" id="download-soft-ui">
   <div class="bg-gradient-dark position-relative m-3 border-radius-xl overflow-hidden">
     <img src=".{% static 'chatbot/images/shapes/waves-white.svg' %}" alt="pattern-lines" class="position-absolute start-0 top-md-0 w-100 opacity-2">
     <div class="container py-7 postion-relative z-index-2 position-relative">
       <div class="row">
         <div class="col-md-7 mx-auto text-center">
-          <h3 class="text-white mb-0">Do you love this awesome</h3>
-          <h3 class="text-white">UI Kit for Bootstrap 5?</h3>
-          
+          <h3 class="text-white mb-0">Funcionalidades</h3> <!-- Título centrado -->
+        </div>
+      </div>
+      <hr>
+      <div class="row">
+        <div class="col-md-4">
+          <div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title">Solicita información dentro de un PDF</h5>
+              <h6 class="card-subtitle mb-2 text-muted">Ask PDF</h6>
+              <p class="card-text">Nuestra tecnología de inteligencia artificial puede crear resúmenes de libros en PDF en solo unos segundos. Analiza el contenido del libro y extrae la información más importante para hacer un resumen breve y fácil de leer.</p>
+              
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title">Creación y entrenamiento de agentes específicos</h5>
+              <h6 class="card-subtitle mb-2 text-muted">Smart Agent</h6>
+              <p class="card-text">Crea agentes inteligentes capaces de brindarte una respuesta basado en una o varias colecciones de PDFs</p>
+              <a href="#" class="card-link">Únete a la lista de espera</a>
+              
+            </div>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card" style="width: 18rem;">
+            <div class="card-body">
+              <h5 class="card-title">Integrable y flexible</h5>
+              <h6 class="card-subtitle mb-2 text-muted">REST API</h6>
+              <p class="card-text">Las funcionalidades de platicar con un PDF así como la exposición de agentes es posible consumirlas vía servicio web para integración fácil con otras plataformas</p>
+              <a href="#" class="card-link">Únete a la lista de espera</a>
+            
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
+  
+  
 <!-- -------   START PRE-FOOTER 2 - simple social line w/ title & 3 buttons    -------- -->
-<div class="py-5">
-  <div class="container">
+<hr>
+
+<footer class="bg-dark text-white py-4">
+  <div class="container-fluid">
     <div class="row">
-      <div class="col-lg-5 ms-auto">
-        <h4 class="mb-1">Thank you for your support!</h4>
-        <p class="lead mb-0">We deliver the best web products</p>
+      <div class="col-lg-6">
+        <p class="text-start">2023 - Research and Development Team</p>
       </div>
-      
+      <div class="col-lg-6 text-end">
+        <ul class="list-inline">
+          <li class="list-inline-item">
+            <a href="#" style="color: white;">Términos y condiciones</a>
+          </li>
+          <li class="list-inline-item">
+            <a href="#" style="color: white;">Contáctanos</a>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
-</div>
+</footer>
+
 <!-- -------   END PRE-FOOTER 2 - simple social line w/ title & 3 buttons    -------- -->
-
 </div>
-
-
-  
-
-  
-
-
 
 
 <script>
@@ -354,6 +262,7 @@
             window.location.href = redirectUrl;
           } else {
             // Maneja el caso de respuesta no exitosa si es necesario
+            
           }
         },
         error: function(xhr, textStatus, error) {
@@ -369,6 +278,7 @@
           formSubmitted = false;  // Restablece el indicador de envío del formulario
         }
       });
+      event.preventDefault();  // Previene la acción predeterminada del evento submit
     });
   });
 </script>
