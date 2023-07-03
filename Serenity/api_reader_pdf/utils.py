@@ -5,16 +5,30 @@ from PyPDF2 import PdfReader
 from .models import Embedding
 from chatbot.models import Usuario
 from sklearn.metrics.pairwise import cosine_similarity
-from sklearn.metrics.pairwise import cosine_distances
+
 
 
 
 
 
 openai.api_key = ""
-modelo = "text-davinci-003"
 tokenizer = tiktoken.get_encoding("cl100k_base")
-max_tokens = 1000
+MAX_TOKENS = 3000
+MODEL = "gpt-3.5-turbo-16k"
+
+
+def pdf_doc_to_text(pdf):
+    reader = PdfReader(pdf)
+    text = ''
+
+    for page in reader.pages:
+        text += page.extract_text()
+
+    title = reader.metadata.get('/Title')
+
+    return title, text
+
+
 
 
 def pdf_to_text(url):
@@ -73,7 +87,7 @@ def remove_newlines(serie):
     return serie
 
 
-def split_into_many(text, max_tokens=max_tokens):
+def split_into_many(text, max_tokens=MAX_TOKENS):
     # Split the text into sentences
     sentences = text.split('. ')
 
@@ -111,7 +125,7 @@ def split_into_many(text, max_tokens=max_tokens):
 
 
 #Funcion para agregar un nuevo chunk a BD
-def pdf_dfs(user_id, text, nombre_archivo):
+def pdf_dfs(user_id, text, nombre_archivo, max_tokens=MAX_TOKENS):
     shortened = []
 
     # Tokenizar el texto y guardar el número de tokens en una nueva columna
@@ -178,11 +192,14 @@ def create_context(question, identificador):
 
     return ' '.join(best_text_chunk)
 
-def answer_question(identificador, question='', model="text-davinci-003", debug=False, max_tokens=1000, stop_sequence=None):
+def answer_question(identificador, question='', model=MODEL, debug=False):
     """
     Answer a question based on the most similar context from the database texts
     """
     context = create_context(question, identificador)
+
+    #Aqui se debera consultar los datos del historial de chats para pasarlas al modelo:
+    #----------------------------------------------------------------------------------
 
     # If debug, print the raw model response
     if debug:
@@ -191,17 +208,38 @@ def answer_question(identificador, question='', model="text-davinci-003", debug=
 
     try:
         # Create a completions using the question and context
-        response = openai.Completion.create(
-            prompt = f"Soy un chatbot que puede leer y responder preguntas basadas en el contexto de un PDF. Si no puedo responder tu pregunta, diré 'No lo sé'. Si deseas saber mi opinión, pregunta '¿Qué piensas tú?', '¿Cuál es tu punto de vista?' o algo similar. También puedes preguntarme cómo estoy o cualquier otra pregunta abierta. ¡Estoy aquí para ayudarte! \n\nContexto: {context}\n\nPregunta: {question}\n\nRespuesta: ",
-            temperature=0.5,
-            max_tokens=max_tokens,
-            top_p=1,
-            frequency_penalty=0,
-            presence_penalty=0,
-            stop=stop_sequence,
+        response = openai.ChatCompletion.create(
             model=model,
+            messages=[
+                {"role": "system", "content": f"Soy un chatbot amable que puede leer y responder preguntas basadas en el contexto de un PDF. Puedo complementar la respuesta con mi conocimiento pero no dar informacion diferente al PDF \n\nContexto: {context}"},
+                {"role": "user", "content": f"{question}"},
+            ],
+            temperature=0,
         )
-        return response["choices"][0]["text"].strip()
+        return response['choices'][0]['message']['content']
     except Exception as e:
-        print(e)
-        return ""
+        return e
+
+
+# list = []
+
+
+# def dict_create(question, answer, hora):
+#     dict = {
+#         'user-message': question,
+#         'ia-message': answer,
+#         'hora-message': hora
+#     }
+#     return list
+
+# question = 'como estas?'
+
+# answer = 'bien y tu?'
+
+# list.append(dict_create(question,answer))
+
+# for dict in list:
+#     user_message = dict['ia']
+#     print(user_message)
+
+# print(list)

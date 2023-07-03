@@ -153,34 +153,36 @@
         <p class="pb-3">
           Paste or type the URL of a PDF, doesn't matter if it is in google drive or not.
         </p>
-        <form id="url_form" method="post" autocomplete="off" action="api_reader_pdf/create_embeddings_url">
+        <form id="url_form" method="post" autocomplete="off" action="api_reader_pdf/create_embeddings_url" enctype="multipart/form-data">
           {% csrf_token %}
           <div class="card-body p-0 my-3">
             <div class="row">
               <div class="input-group input-group-static mb-4">
-                <input type="text" class="form-control" placeholder="URL" id="url" name="url" required>
+                <input type="text" class="form-control" placeholder="URL" id="url" name="url" >
               </div>
             </div>
           </div>
-          
+          <p>Or upload a PDF file:</p>
+          <input type="file"  id="archivo" name="archivo" >
           <div class="row">
             <div class="col-md-12 text-center">
               <button class="btn bg-gradient-primary mt-3 mb-0" id="submit-button">Send Message</button>
             </div>
             
           </div>
-          
-          {% for nombre_archivo, identificador in data %}
-            <div class="box_gg">
-              <a href="/{{ user.username }}/{{ identificador }}/">{{ nombre_archivo }}</a>
-            </div>
-          {% endfor %}
           <div id="loading-overlay" class="loading-overlay">
             <div class="loading-spinner"></div>
           </div>
         </form>
+        
         </div>
+        
       </div>
+      {% for nombre_archivo, identificador in data %}
+            <div class="box_gg">
+              <a href="/{{ user.username }}/{{ identificador }}/">{{ nombre_archivo }}</a>
+            </div>
+          {% endfor %}
     </div>
     
     {% endif %}
@@ -352,7 +354,6 @@
             window.location.href = redirectUrl;
           } else {
             // Maneja el caso de respuesta no exitosa si es necesario
-            
           }
         },
         error: function(xhr, textStatus, error) {
@@ -368,7 +369,6 @@
           formSubmitted = false;  // Restablece el indicador de envío del formulario
         }
       });
-      event.preventDefault();  // Previene la acción predeterminada del evento submit
     });
   });
 </script>

@@ -10,3 +10,14 @@ class Embedding(models.Model):
 
     def __str__(self):
         return self.usuario
+
+
+
+class ChatHistory(models.Model):
+    document_id = models.ForeignKey(Embedding, on_delete=models.CASCADE, related_name='documento_id', null=True)
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name='user_chat', null=True)
+    historial = models.JSONField()
+    fecha = models.DateTimeField(auto_now_add=True)
+
+
+    

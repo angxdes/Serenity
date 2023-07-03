@@ -18,6 +18,7 @@ def create_embeddings_url(request):
     print(f"CSRF Token: {csrf_token}")
 
     url = request.POST.get("url")
+    doc = request.FILES.get("archivo")
 
     if not url:
         return JsonResponse({"message": "Invalid data."}, status=400)
@@ -25,7 +26,6 @@ def create_embeddings_url(request):
     # Acceder al usuario autenticado
     user = request.user
     if user.is_authenticated:
-        user_username = user.username
         user_id = user.id    
         nombre_archivo, pdf_text  = pdf_to_text(url)
         pdf_dfs(user_id, pdf_text, nombre_archivo)
@@ -44,7 +44,11 @@ def talk_pdf(request):
     identificador = request.POST.get('identificador')
     question = request.POST.get('question')
     
+    #Aqui se deberia guardar en la BD el mensaje del usuario
+    #------------------------------------------------------
     answer = answer_question(identificador, question)
+
+    #Aqui se guarda la respuesta del BOT en la BD
 
     return JsonResponse({'answer': answer}) 
 
