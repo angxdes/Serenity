@@ -2,9 +2,11 @@ import pandas as pd
 import os, tiktoken, openai, io, requests, random, string
 import numpy as np
 from PyPDF2 import PdfReader
-from .models import Embedding
+from .models import Embedding, ChatHistory
 from chatbot.models import Usuario
 from sklearn.metrics.pairwise import cosine_similarity
+from django.core.exceptions import ObjectDoesNotExist
+
 
 
 
@@ -157,7 +159,14 @@ def pdf_dfs(user_id, text, nombre_archivo, max_tokens=MAX_TOKENS):
     identificador = generar_caracter_aleatorio()
     user = Usuario.objects.get(id=user_id)
     embedding = Embedding(usuario=user, contenido_texto=contenido_texto, embeddings=embeddings, nombre_archivo=nombre_archivo, identificador=identificador)
-    embedding.save()
+    try:
+        embedding.save()
+    except ObjectDoesNotExist:
+        print('Error al almacenar embeddings')
+        return None
+    document_get = Embedding.objects.get(identificador=identificador)
+    chat_history = ChatHistory(usuario=user, document=document_get)
+    chat_history.save()
 
 def encontrar_vector_mas_similar(lista_vectores, vector_objetivo):
     lista_vectores = np.array(lista_vectores)
@@ -198,6 +207,15 @@ def answer_question(identificador, question='', model=MODEL, debug=False):
     """
     context = create_context(question, identificador)
 
+    #Seccion para acceder al historial del chat
+
+    document_get = Embedding.objects.get(identificador=identificador)
+    chat_history = ChatHistory.objects.get(document=document_get)
+    messages_hist = chat_history.historial
+    messages = [{"role": "system", "content": f"Soy un chatbot amable que puede leer y responder preguntas basadas en el contexto de un PDF. Puedo complementar la respuesta con mi conocimiento pero no dar informacion diferente al PDF \n\nContexto: {context}"}]
+    
+    for message in messages_hist:
+        messages.append(message)
     #Aqui se debera consultar los datos del historial de chats para pasarlas al modelo:
     #----------------------------------------------------------------------------------
 
@@ -210,10 +228,7 @@ def answer_question(identificador, question='', model=MODEL, debug=False):
         # Create a completions using the question and context
         response = openai.ChatCompletion.create(
             model=model,
-            messages=[
-                {"role": "system", "content": f"Soy un chatbot amable que puede leer y responder preguntas basadas en el contexto de un PDF. Puedo complementar la respuesta con mi conocimiento pero no dar informacion diferente al PDF \n\nContexto: {context}"},
-                {"role": "user", "content": f"{question}"},
-            ],
+            messages=messages,
             temperature=0,
         )
         return response['choices'][0]['message']['content']
@@ -221,25 +236,28 @@ def answer_question(identificador, question='', model=MODEL, debug=False):
         return e
 
 
-# list = []
+def save_history_user(identificador, message):
+    document_get = Embedding.objects.get(identificador=identificador)
+    chat_history = ChatHistory.objects.get(document=document_get)
+    dict_message = {'role':'user', 'content': f'{message}'}
+    historial_actual = chat_history.historial
+    historial_actual.append(dict_message)
+    chat_history.historial = historial_actual
+    try:
+        chat_history.save()
+    except ObjectDoesNotExist:
+        print('Error al almacenar chat')
+        return None
 
-
-# def dict_create(question, answer, hora):
-#     dict = {
-#         'user-message': question,
-#         'ia-message': answer,
-#         'hora-message': hora
-#     }
-#     return list
-
-# question = 'como estas?'
-
-# answer = 'bien y tu?'
-
-# list.append(dict_create(question,answer))
-
-# for dict in list:
-#     user_message = dict['ia']
-#     print(user_message)
-
-# print(list)
+def save_history_bot(identificador, message):
+    document_get = Embedding.objects.get(identificador=identificador)
+    chat_history = ChatHistory.objects.get(document=document_get)
+    dict_message = {'role':'assistant', 'content': f'{message}'}
+    historial_actual = chat_history.historial
+    historial_actual.append(dict_message)
+    chat_history.historial = historial_actual
+    try:
+        chat_history.save()
+    except ObjectDoesNotExist:
+        print('Error al almacenar chat')
+        return None

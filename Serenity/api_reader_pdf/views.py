@@ -33,6 +33,8 @@ def create_embeddings_url(request):
         # Obtener el último embedding creado para el usuario
         embedding = Embedding.objects.filter(usuario=user).latest('id')
 
+        
+
         return JsonResponse({"message": "Embeddings created successfully.", "embedding_id": embedding.identificador})
 
     return JsonResponse({"message": "Authentication required."}, status=401)
@@ -45,10 +47,13 @@ def talk_pdf(request):
     question = request.POST.get('question')
     
     #Aqui se deberia guardar en la BD el mensaje del usuario
-    #------------------------------------------------------
-    answer = answer_question(identificador, question)
+    save_history_user(identificador,question)
 
+    answer = answer_question(identificador, question)
+    
     #Aqui se guarda la respuesta del BOT en la BD
+    save_history_bot(identificador, answer)
+    
 
     return JsonResponse({'answer': answer}) 
 
