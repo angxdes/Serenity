@@ -15,7 +15,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 openai.api_key = ""
 tokenizer = tiktoken.get_encoding("cl100k_base")
-MAX_TOKENS = 3000
+MAX_TOKENS = 2100
 MODEL = "gpt-3.5-turbo-16k"
 
 
@@ -26,9 +26,7 @@ def pdf_doc_to_text(pdf):
     for page in reader.pages:
         text += page.extract_text()
 
-    title = reader.metadata.get('/Title')
-
-    return title, text
+    return text
 
 
 

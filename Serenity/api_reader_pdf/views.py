@@ -9,7 +9,6 @@ from django.contrib.auth.decorators import login_required
 
 used_sessions = set()
 
-@ensure_csrf_cookie
 @require_POST
 @ensure_csrf_cookie
 @transaction.atomic
@@ -18,16 +17,21 @@ def create_embeddings_url(request):
     print(f"CSRF Token: {csrf_token}")
 
     url = request.POST.get("url")
-    doc = request.FILES.get("archivo")
+    file = request.FILES.get("file")
 
-    if not url:
+    if url == None and file == None:
         return JsonResponse({"message": "Invalid data."}, status=400)
     
     # Acceder al usuario autenticado
     user = request.user
     if user.is_authenticated:
-        user_id = user.id    
-        nombre_archivo, pdf_text  = pdf_to_text(url)
+        user_id = user.id
+        if url != '':
+            nombre_archivo, pdf_text  = pdf_to_text(url)
+        if file != '':
+            pdf_text = pdf_doc_to_text(file)
+            nombre_archivo = file.name
+
         pdf_dfs(user_id, pdf_text, nombre_archivo)
 
         # Obtener el último embedding creado para el usuario

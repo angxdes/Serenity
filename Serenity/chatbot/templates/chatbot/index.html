@@ -35,18 +35,23 @@
   <!-- Nepcha is an easy-to-use web analytics. No cookies and fully compliant with GDPR, CCPA, and PECR. -->
   <script defer data-site="YOUR_DOMAIN_HERE" src="https://api.nepcha.com/js/nepcha-analytics.js"></script>
   <style>
-    .box_gg {
-      background-color: rgba(0, 0, 0, 0.5); /* Cambia el valor de la transparencia ajustando el último número */
-      padding: 10px;
-      margin-bottom: 10px;
-      border-radius: 5px;
-      color: white;
-    }
+    .box_container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-gap: 20px;
+  }
+  .box_gg {
+    background-color: #f2f2f2;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  }
     
-    .box_gg a {
-      color: white;
-      text-decoration: none;
-    }
+  .box_gg a {
+    text-decoration: none;
+    color: #333;
+    font-weight: bold;
+  }
     
     .box_gg a:hover {
       text-decoration: underline;
@@ -54,6 +59,35 @@
     #main-container {
     padding-top: 10%;
   }
+
+  .loading-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 9999;
+      display: none;
+    }
+
+    .loading-spinner {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      border: 16px solid #f3f3f3;
+      border-top: 16px solid #3498db;
+      border-radius: 50%;
+      width: 120px;
+      height: 120px;
+      animation: spin 2s linear infinite;
+    }
+
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
     
   </style>
 
@@ -63,45 +97,40 @@
 <body class="index-page bg-gray-200">
   <!-- Navbar -->
   <div class="container position-sticky z-index-sticky top-0">
-    <div class="row">
-      <div class="col-12">
-        <nav class="navbar navbar-expand-lg blur border-radius-xl top-0 z-index-fixed shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
-          <!-- Contenido de la barra de navegación -->
-          <a class="navbar-brand font-weight-bolder ms-sm-3" rel="tooltip" data-placement="bottom" target="_blank">
-            Serenity
-          </a>
-          {% if user.is_authenticated %}
-            <p class="nombre_usuario">Bienvenido, {{ user.username }}</p>
+    <nav class="navbar navbar-expand-lg blur border-radius-xl top-0 z-index-fixed shadow position-absolute my-3 py-2 start-0 end-0 mx-4">
+      <!-- Contenido de la barra de navegación -->
+      <a class="navbar-brand font-weight-bolder ms-sm-3" rel="tooltip" data-placement="bottom" target="_blank">
+        Serenity
+      </a>
+      {% if user.is_authenticated %}
+      <p class="nombre_usuario">Bienvenido, {{ user.username }}</p>
+      {% endif %}
+      <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0 ms-lg-12 ps-lg-5" id="navigation">
+        <ul class="navbar-nav navbar-nav-hover ms-auto">
+          <li class="nav-item my-auto ms-3 ms-lg-0">
+            <a href="/" class="btn btn-sm  bg-gradient-primary  mb-0 me-1 mt-2 mt-md-0">Home</a>
+          </li>
+          {% if not user.is_authenticated %}
+          <li class="nav-item my-auto ms-3 ms-lg-0">
+            <a href="/register" class="btn btn-sm  bg-gradient-primary  mb-0 me-1 mt-2 mt-md-0">Register</a>
+          </li>
+          <li class="nav-item my-auto ms-3 ms-lg-0">
+            <a href="/login" class="btn btn-sm  bg-gradient-primary  mb-0 me-1 mt-2 mt-md-0">Login</a>
+          </li>
           {% endif %}
-          <div class="collapse navbar-collapse w-100 pt-3 pb-2 py-lg-0 ms-lg-12 ps-lg-5" id="navigation">
-            <ul class="navbar-nav navbar-nav-hover ms-auto">
-              <li class="nav-item my-auto ms-3 ms-lg-0">
-                <a href="/" class="btn btn-sm  bg-gradient-primary  mb-0 me-1 mt-2 mt-md-0">Home</a>
-              </li>
-              {% if not user.is_authenticated %}
-              <li class="nav-item my-auto ms-3 ms-lg-0">
-                <a href="/register" class="btn btn-sm  bg-gradient-primary  mb-0 me-1 mt-2 mt-md-0">Register</a>
-              </li>
-              <li class="nav-item my-auto ms-3 ms-lg-0">
-                <a href="/login" class="btn btn-sm  bg-gradient-primary  mb-0 me-1 mt-2 mt-md-0">Login</a>
-              </li>
-              {% endif %}
-              {% if user.is_authenticated %}
-              <li class="nav-item my-auto ms-3 ms-lg-0">
-                <a href="{% url 'logout' %}" class="btn btn-sm  bg-gradient-primary  mb-0 me-1 mt-2 mt-md-0">Logout</a>
-              </li>
-              {% endif %}
-            </ul>
-          </div>
-        </nav>
+          {% if user.is_authenticated %}
+          <li class="nav-item my-auto ms-3 ms-lg-0">
+            <a href="{% url 'logout' %}" class="btn btn-sm  bg-gradient-primary  mb-0 me-1 mt-2 mt-md-0">Logout</a>
+          </li>
+          {% endif %}
+        </ul>
       </div>
-    </div>
+    </nav>
   </div>
   
   <div class="container" id="main-container">
     <div class="row">
       <div class="col-lg-6 mx-auto text-center">
-        
         <h2 class="">Transforma la manera de como trabajas o estudias usando I.A conversacional </h2>
         <p class="lead">Herramienta perfecta para estudiantes, profesionales<br /> cualquiera que tenga que lidiar con síntesis de conocimiento</p>
         {% if not user.is_authenticated %}
@@ -122,38 +151,54 @@
         </div>
         <div class="card-body">
           <p class="pb-3">
-            Pegue o escriba la URL de un PDF, no importa si está en Google Drive o no.
+            Pegue o escriba la URL de un PDF, no importa si está en Google Drive o no:
           </p>
-          <form id="url_form" method="post" autocomplete="off" action="api_reader_pdf/create_embeddings_url">
+          <form id="url_form" method="post" autocomplete="off" action="api_reader_pdf/create_embeddings_url" enctype="multipart/form-data">
             {% csrf_token %}
             <div class="card-body p-0 my-3">
               <div class="row">
                 <div class="input-group input-group-static mb-4">
-                  <input type="text" class="form-control" placeholder="URL" id="url" name="url" required>
+                  <input type="text" class="form-control" placeholder="URL" id="url" name="url">
                 </div>
               </div>
-            </div>
-            
+              <p class="pb-3">
+                O sube el archivo desde tu computadora:
+              </p>
+              <div class="row">
+                <div class="input-group input-group-static mb-4">
+                  <input type="file" id="file" name="file">
+                </div>
+              </div>
+              
             <div class="row">
               <div class="col-md-12 text-center">
                 <button class="btn bg-gradient-primary mt-3 mb-0" id="submit-button">Platicar</button>
               </div>
             </div>
-            
-            {% for nombre_archivo, identificador in data %}
-              <div class="box_gg">
-                <a href="/{{ user.username }}/{{ identificador }}/">{{ nombre_archivo }}</a>
-              </div>
-            {% endfor %}
-            <div id="loading-overlay" class="loading-overlay">
-              <div class="loading-spinner"></div>
-            </div>
           </form>
+          <div id="loading-overlay" class="loading-overlay">
+            <div class="loading-spinner"></div>
+          </div>
         </div>
+        <div class="col-lg-6 mx-auto text-center">
+          <h2>Tus consultas</h2>
+        </div>
+        <div class="box_container">
+          {% for nombre_archivo, identificador in data %}
+          <a href="/{{ user.username }}/{{ identificador }}/">
+          <div class="box_gg">
+            {{ nombre_archivo }}
+          </div>
+        </a>
+          {% endfor %}
       </div>
+      </div>
+      </div>
+      
     </div>
   </div>
   {% endif %}
+  
   
 
 
@@ -249,10 +294,13 @@
       // Deshabilita el botón de envío para evitar envíos duplicados
       $('#submit-button').prop('disabled', true);
       // Envía el formulario utilizando AJAX
+      var formData = new FormData(this);  // Crea un objeto FormData con el formulario actual
       $.ajax({
         url: $(this).attr('action'),
         method: 'POST',
-        data: $(this).serialize(),
+        data: formData,
+        processData: false,  // Evita que jQuery procese los datos
+        contentType: false,  // Evita que jQuery establezca el tipo de contenido
         success: function(response) {
           // Verifica el estado de respuesta
           if (response.message === "Embeddings created successfully.") {
@@ -282,6 +330,7 @@
     });
   });
 </script>
+
 
 
 

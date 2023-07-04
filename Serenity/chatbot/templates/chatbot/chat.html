@@ -384,7 +384,7 @@
 <div class="container">
   <div class="links-column">
     <h2>Archivos</h2>
-    <button id="open-popup-btn"><i class="fas fa-plus"></i> Agregar Archivos</button>
+    <a href="/"><button id="open-popup-btn"><i class="fas fa-plus"></i> Agregar Archivos</button></a>
     <div id="popup" class="popup">
       <div class="popup-content">
         <span class="close">&times;</span>
@@ -405,7 +405,9 @@
   <div class="chatbot-column">
     <form id="chat-form" method="post" autocomplete="off" action="{% url 'api_reader_pdf:talk_pdf' %}">
       {% csrf_token %}
-      <div id="chatbox"></div>
+      <div id="chatbox">
+        <div class="bot-message">Hola</div>
+      </div>
       <div class="input-container">
         <input type="text" id="user-input" placeholder="Escribe un mensaje...">
         <button type="submit" id="send-btn"><i class="fas fa-paper-plane"></i></button>
