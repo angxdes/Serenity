@@ -207,12 +207,16 @@ def answer_question(identificador, question='', model=MODEL, debug=False):
     """
     context = create_context(question, identificador)
 
+    title_pdf = Embedding.objects.get(identificador=identificador)
+    
+    title = title_pdf.nombre_archivo
+
     #Seccion para acceder al historial del chat
 
     document_get = Embedding.objects.get(identificador=identificador)
     chat_history = ChatHistory.objects.get(document=document_get)
     messages_hist = chat_history.historial
-    messages = [{"role": "system", "content": f"Soy un chatbot amable que puede leer y responder preguntas basadas en el contexto de un PDF. Puedo complementar la respuesta con mi conocimiento pero no dar informacion diferente al PDF \n\nContexto: {context}"}]
+    messages = [{"role": "system", "content": f"Soy un chatbot amable que puede leer y responder preguntas basadas en el contexto de un PDF. Puedo complementar la respuesta con mi conocimiento pero no dar informacion diferente al PDF \n\nTitulo PDF:{title} \n\nContexto: {context}"}]
     
     for message in messages_hist:
         messages.append(message)
