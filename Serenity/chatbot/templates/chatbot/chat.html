@@ -383,18 +383,8 @@
 <!-- End Navbar -->
 <div class="container">
   <div class="links-column">
-    <h2>Archivos</h2>
     <a href="/"><button id="open-popup-btn" class="btn btn-sm  bg-gradient-primary  mb-0 me-1 mt-2 mt-md-0"><i class="fas fa-plus"></i> Agregar Archivos</button></a>
-    <div id="popup" class="popup">
-      <div class="popup-content">
-        <span class="close">&times;</span>
-        <form id="link-form" method="post" autocomplete="off" action="api_reader_pdf/create_embeddings_url">
-          {% csrf_token %}
-          <input type="text" placeholder="URL" id="url" name="url" required>
-          <button class="btn bg-gradient-primary mt-3 mb-0" id="submit-button">Send Message</button>
-        </form>
-      </div>
-    </div>
+    <h2>Archivos</h2>
     {% for nombre_archivo, identificador in data %}
       <div class="link-box">
         <a href="/{{ user_username }}/{{ identificador }}/"><i class="fas fa-link"></i>{{ nombre_archivo }}</a>
@@ -406,7 +396,15 @@
     <form id="chat-form" method="post" autocomplete="off" action="{% url 'api_reader_pdf:talk_pdf' %}">
       {% csrf_token %}
       <div id="chatbox">
-        <div class="bot-message">Hola</div>
+        <div class="bot-message">¡Hola! ¿En qué puedo ayudarte hoy?</div>
+        {% for dict in chat %}
+        {% if dict.role == 'user' %}
+        <div class="user-message">{{ dict.content }}</div>
+        {% endif %}
+        {% if dict.role == 'assistant' %}
+        <div class="bot-message">{{ dict.content }}</div>
+        {% endif %}
+        {% endfor %}
       </div>
       <div class="input-container">
         <input type="text" id="user-input" placeholder="Escribe un mensaje...">

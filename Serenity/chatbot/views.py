@@ -34,6 +34,9 @@ def ht(request):
 @login_required
 def chat_pdf(request, user_username, identificador):
     user = get_object_or_404(Usuario, username=user_username)
+    document_get = Embedding.objects.get(identificador=identificador)
+    chat_history = ChatHistory.objects.get(document=document_get)
+    chat = chat_history.historial
     nombre_archivos = list(Embedding.objects.filter(usuario=user).values_list('nombre_archivo', flat=True))
     identificadores = list(Embedding.objects.filter(usuario=user).values_list('identificador', flat=True))
     combined_data = zip(nombre_archivos, identificadores)
@@ -41,6 +44,7 @@ def chat_pdf(request, user_username, identificador):
     'user_username': user_username,
     'data': combined_data,
     'identificador':  identificador,
+    'chat': chat
     }
     return render(request, 'chatbot/chat.html', context)
 
