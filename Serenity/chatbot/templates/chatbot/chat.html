@@ -410,7 +410,7 @@
     <form id="chat-form" method="post" autocomplete="off" action="{% url 'api_reader_pdf:talk_pdf' %}">
       {% csrf_token %}
       <div id="chatbox">
-        <div class="bot-message">¡Hola! ¿En qué puedo ayudarte hoy?</div>
+        <div class="bot-message">¡Hola! Estas platicando con el archivo: {{ archivo }}</div>
         {% for dict in chat %}
         {% if dict.role == 'user' %}
         <div class="user-message">{{ dict.content }}</div>

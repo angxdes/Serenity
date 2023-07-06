@@ -26,9 +26,9 @@ def create_embeddings_url(request):
     user = request.user
     if user.is_authenticated:
         user_id = user.id
-        if url != '':
+        if url != "":
             nombre_archivo, pdf_text  = pdf_to_text(url)
-        if file != '':
+        else:
             pdf_text = pdf_doc_to_text(file)
             nombre_archivo = file.name
 
