@@ -336,6 +336,16 @@
     #add-link-btn:hover {
       background-color: #45a049;
     }
+    a.active {
+      /* Estilos para el enlace activo */
+      color: blue;
+    }
+    
+    .link-box a {
+      /* Estilos para los enlaces normales */
+      color: black;
+    }
+    
 </style>
 
 
@@ -386,10 +396,14 @@
     <a href="/"><button id="open-popup-btn" class="btn btn-sm  bg-gradient-primary  mb-0 me-1 mt-2 mt-md-0"><i class="fas fa-plus"></i> Agregar Archivos</button></a>
     <h2>Archivos</h2>
     {% for nombre_archivo, identificador in data %}
-      <div class="link-box">
-        <a href="/{{ user_username }}/{{ identificador }}/"><i class="fas fa-link"></i>{{ nombre_archivo }}</a>
-      </div>
-    {% endfor %}
+    <a href="/{{ user_username|add:'/'|add:identificador }}/" {% if request.path == '/'|add:user_username|add:'/'|add:identificador|add:'/' %}class="active"{% endif %}>
+    <div class="link-box">
+      
+        <i class="fas fa-link"></i>{{ nombre_archivo }}
+      
+    </div>
+  </a>
+  {% endfor %}
   </div>
 
   <div class="chatbot-column">

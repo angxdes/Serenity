@@ -44,7 +44,8 @@ def chat_pdf(request, user_username, identificador):
     'user_username': user_username,
     'data': combined_data,
     'identificador':  identificador,
-    'chat': chat
+    'chat': chat,
+    'current_url': request.path
     }
     return render(request, 'chatbot/chat.html', context)
 
