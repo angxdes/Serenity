@@ -37,17 +37,10 @@
   <pre><code>git clone https://github.com/angxdes/Serenity</code></pre>
   
   <li>Accede al directorio del proyecto:</li>
-  <pre><code>cd Serenity</code></pre>
+  <pre><code>cd Serenity/Serenity</code></pre>
   
   <li>Crea un entorno virtual utilizando <code>venv</code> (asegúrate de tener Python 3 instalado):</li>
   <pre><code>python3 -m venv venv</code> o <code>python -m venv venv</code></pre>
-  
-  <li>En el archivo .gitignore introduce la carpeta venv, tu archivo debera tener una linea asi: </li>
-  <pre><code>
-  venv/
-*.pyc
-__pycache__/
-  </code></pre>
   
   <li>Activa el entorno virtual:</li>
   <ul>
@@ -60,8 +53,6 @@ __pycache__/
   <li>Instala las dependencias necesarias:</li>
   <pre><code>python -m pip install -r requirements.txt</code></pre>
   
-  <li>Entra a la carpeta del proyecto en Django:</li>
-  <pre><code>cd Serenity</code></pre>
   <li>Crea la BD</li>
   <pre><code>python manage.py migrate</code></pre>
   
