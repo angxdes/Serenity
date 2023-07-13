@@ -1,4 +1,3 @@
-import pandas as pd
 import os, tiktoken, openai, io, requests, random, string
 import numpy as np
 from PyPDF2 import PdfReader
