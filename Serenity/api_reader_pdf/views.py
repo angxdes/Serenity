@@ -29,6 +29,8 @@ def create_embeddings_url(request):
         if url != "":
             try:
                 nombre_archivo, pdf_text  = pdf_to_text(url)
+                if pdf_text == None:
+                    return JsonResponse({"message": "URL no válida."})
             except:
                 return JsonResponse({"message": "Error al procesar texto de la url"})
         else:

@@ -46,6 +46,9 @@ def pdf_to_text(url):
         return title, text
 
     else:
+        url_split = url.split('.')
+        if url_split[-1] != 'pdf':
+            return None, None
         response = requests.get(url)
         pdf_file = io.BytesIO(response.content)
         pdf_reader = PdfReader(pdf_file)
