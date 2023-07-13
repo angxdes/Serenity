@@ -150,6 +150,8 @@
           </div>
         </div>
         <div class="card-body">
+          <div id="errores_e">
+          </div>
           <p class="pb-3">
             Pegue o escriba la URL de un PDF, no importa si está en Google Drive o no:
           </p>
@@ -309,8 +311,9 @@
             var redirectUrl = '/' + userUsername + '/' + response.embedding_id + '/';
             window.location.href = redirectUrl;
           } else {
-            // Maneja el caso de respuesta no exitosa si es necesario
-            
+            var fecha = new Date();
+            var mensaje = '<div class="alert alert-danger">' + response.message + ' | Fecha: ' + fecha +'</div>';
+            $("#errores_e").html(mensaje);
           }
         },
         error: function(xhr, textStatus, error) {

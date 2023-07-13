@@ -12,7 +12,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 
 
-openai.api_key = "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"
+openai.api_key = ""
 tokenizer = tiktoken.get_encoding("cl100k_base")
 MAX_TOKENS = 2100
 MODEL = "gpt-3.5-turbo-16k"
@@ -159,8 +159,7 @@ def pdf_dfs(user_id, text, nombre_archivo, max_tokens=MAX_TOKENS):
     try:
         embedding.save()
     except ObjectDoesNotExist:
-        print('Error al almacenar embeddings')
-        return None
+        return 'Error al almacenar embeddings'
     document_get = Embedding.objects.get(identificador=identificador)
     chat_history = ChatHistory(usuario=user, document=document_get)
     chat_history.save()

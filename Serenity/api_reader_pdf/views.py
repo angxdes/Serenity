@@ -27,12 +27,20 @@ def create_embeddings_url(request):
     if user.is_authenticated:
         user_id = user.id
         if url != "":
-            nombre_archivo, pdf_text  = pdf_to_text(url)
+            try:
+                nombre_archivo, pdf_text  = pdf_to_text(url)
+            except:
+                return JsonResponse({"message": "Error al procesar texto de la url"})
         else:
-            pdf_text = pdf_doc_to_text(file)
-            nombre_archivo = file.name
-
-        pdf_dfs(user_id, pdf_text, nombre_archivo)
+            try:
+                pdf_text = pdf_doc_to_text(file)
+                nombre_archivo = file.name
+            except:
+                return JsonResponse({"message": "Error al procesar texto del archivo"})
+        try:
+            pdf_dfs(user_id, pdf_text, nombre_archivo)
+        except:
+            return JsonResponse({"message":"Hubo un error al crear los embeddings y/o almacenarlos"})
 
         # Obtener el último embedding creado para el usuario
         embedding = Embedding.objects.filter(usuario=user).latest('id')
