@@ -12,7 +12,7 @@ from django.core.exceptions import ObjectDoesNotExist
 
 
 
-openai.api_key = ""
+openai.api_key = "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"
 tokenizer = tiktoken.get_encoding("cl100k_base")
 MAX_TOKENS = 2100
 MODEL = "gpt-3.5-turbo-16k"
