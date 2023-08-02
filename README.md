@@ -5,19 +5,19 @@
 - [Descripción del Proyecto](#descripción-del-proyecto)
 - [Características Principales](#características-principales)
 - [Instalación](#instalación)
+- [Imágenes](#imágenes)
 - [Contribución](#contribución)
 
 ## Descripción del Proyecto
 
 <p>
-  El proyecto es una implementación de inteligencia artificial que busca crear expertos virtuales en diversos temas con el objetivo de ayudar a las empresas a optimizar su trabajo. Esta solución permite interactuar con estos expertos a través de chat, admitiendo el envío y análisis de diferentes tipos de archivos, como PDF, imágenes y videos.
+El proyecto es una implementación de inteligencia artificial destinada a crear expertos virtuales en diversas áreas con el objetivo de ayudar a las empresas a optimizar su trabajo. Esta solución permite interactuar con dichos expertos a través de chat, enfocándose específicamente en la capacidad de leer y analizar archivos en formato PDF. De esta manera, se facilita la colaboración y el procesamiento de información contenida en documentos PDF para obtener resultados más eficientes y precisos.
 </p>
 
 ## Características Principales
 
 <ul>
   <li><strong>Interacción en tiempo real:</strong> Los usuarios pueden chatear directamente con los expertos virtuales, realizando consultas, obteniendo recomendaciones y recibiendo respuestas de manera instantánea.</li>
-  <li><strong>Soporte para múltiples formatos:</strong> El sistema es capaz de procesar y analizar archivos en diferentes formatos, como PDF, imágenes y videos, para extraer información relevante y brindar respuestas precisas y contextualizadas.</li>
   <li><strong>Embeddings de contenido:</strong> Mediante técnicas de procesamiento de lenguaje natural y aprendizaje automático, el proyecto realiza embeddings de los archivos y mensajes enviados, lo que permite una mejor comprensión y análisis del contenido.</li>
   <li><strong>Optimización del trabajo:</strong> Al contar con expertos virtuales especializados, las empresas pueden mejorar la eficiencia y calidad de su trabajo al tener acceso a conocimientos y recomendaciones específicas en tiempo real.</li>
 </ul>
@@ -61,6 +61,31 @@
   <p>O</p>
   <pre><code>python manage.py runserver</code></pre>
 </ol>
+
+## Imágenes
+
+A continuación, se muestran algunos screenshots y el diagrama de la base de datos para que puedas tener una vista previa de cómo se ve el proyecto en acción:
+
+### Screenshot 1 - Chat
+
+![Chat](Imagenes/Chat_img.png)
+
+### Screenshot 2 - Funcionalidad
+
+![Funcionalidad](Imagenes/Funcionalidad_img.png)
+
+### Screenshot 3 - Página Principal
+
+![Página Principal](Imagenes/Index_img.png)
+
+### Diagrama de la Base de Datos
+
+El diagrama de la base de datos muestra la relación entre las diferentes tablas utilizadas en el proyecto. Esto proporciona una visión general de cómo se almacenan y organizan los datos.
+
+![Diagrama de la Base de Datos](Imagenes/diagrama_BD.png)
+
+Esperamos que estas imágenes te den una mejor idea de cómo funciona el proyecto y cómo se presenta ante los usuarios. ¡Disfruta explorando las diversas funcionalidades y características que ofrece Serenity!
+
 
 ## Contribución
 
