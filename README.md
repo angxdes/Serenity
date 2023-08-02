@@ -9,7 +9,7 @@
 - [Contribución](#contribución)
 
 ## Descripción del Proyecto
-
+ 
 <p>
 El proyecto es una implementación de inteligencia artificial destinada a crear expertos virtuales en diversas áreas con el objetivo de ayudar a las empresas a optimizar su trabajo. Esta solución permite interactuar con dichos expertos a través de chat, enfocándose específicamente en la capacidad de leer y analizar archivos en formato PDF. De esta manera, se facilita la colaboración y el procesamiento de información contenida en documentos PDF para obtener resultados más eficientes y precisos.
 </p>
