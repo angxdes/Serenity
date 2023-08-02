@@ -64,7 +64,7 @@ El proyecto es una implementación de inteligencia artificial destinada a crear 
 
 ## Imágenes
 
-A continuación, se muestran algunos screenshots y el diagrama de la base de datos para que puedas tener una vista previa de cómo se ve el proyecto en acción:
+A continuación, se muestran algunos screenshots y el diagrama de la base de datos para que puedas tener una vista previa de cómo se ve el proyecto en acción: 
 
 ### Screenshot 1 - Chat
 
